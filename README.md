@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # sessions
 
 ## Project setup
@@ -24,3 +25,6 @@ npm run test
 ```
 npm run lint
 ```
+=======
+# sessions
+>>>>>>> 48f42aaccae71305e207b7ad86896e49fb53cce9
