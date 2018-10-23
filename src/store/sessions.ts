@@ -1,4 +1,6 @@
 import { Session, State } from '@/types';
+import isBefore from 'date-fns/is_before';
+import { GetterTree } from 'vuex';
 
 export const state: State = {
   sessions: [
@@ -8,7 +10,7 @@ export const state: State = {
       description:
         'Shallow dive in the kiddie pool will get you quite far w/ lit-html and lit-template',
       speaker: 'Eldridge Cleaver',
-      datetime: new Date('2001-01-01 12:00:00 PM'),
+      datetime: new Date('2019-01-01 12:00:00 PM'),
       tags: ['Web Components', 'Polymer', 'PWA']
     } as Session,
     {
@@ -20,4 +22,11 @@ export const state: State = {
       tags: ['VueJS', 'PWA']
     } as Session
   ]
+};
+
+export const getters: GetterTree<State, any> = {
+  upcoming: state =>
+    state.sessions.filter(session => isBefore(new Date(), session.datetime)),
+  past: state =>
+    state.sessions.filter(session => isBefore(new Date(), session.datetime))
 };

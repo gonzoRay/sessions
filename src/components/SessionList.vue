@@ -1,6 +1,6 @@
 <template>
   <v-list two-line subheader>
-    <v-list-tile v-for="item in sessions" :key="item.title" avatar>
+    <v-list-tile v-for="item in upcoming" :key="item.title" avatar>
       <v-list-tile-avatar>
         <v-avatar>
           <v-icon>event_note</v-icon>
@@ -22,13 +22,13 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { State } from 'vuex-class';
+import { Getter } from 'vuex-class';
 import { Session } from '@/types';
 
 @Component
 export default class SessionList extends Vue {
-  @State
-  private sessions!: Session[];
+  @Getter
+  private upcoming!: Session[];
   @Prop()
   private title!: string;
 }
