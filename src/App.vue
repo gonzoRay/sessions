@@ -23,7 +23,7 @@
                 <v-list-tile-title>{{ item.text }}</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile v-for="(child, i) in item.children" :key="i" @click>
+            <v-list-tile v-for="(child, i) in item.children" :key="i">
               <v-list-tile-action v-if="child.icon">
                 <v-icon>{{ child.icon }}</v-icon>
               </v-list-tile-action>
@@ -32,7 +32,7 @@
               </v-list-tile-content>
             </v-list-tile>
           </v-list-group>
-          <v-list-tile v-else :key="item.text" @click>
+          <v-list-tile v-else :key="item.text">
             <v-list-tile-action>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-tile-action>
@@ -46,7 +46,7 @@
     <v-toolbar :clipped-left="$vuetify.breakpoint.lgAndUp" color="blue darken-3" dark app fixed>
       <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-        <span class="hidden-sm-and-down">Sessions</span>
+        <span>Sessions</span>
       </v-toolbar-title>
       <v-text-field
         flat
@@ -62,13 +62,13 @@
       </v-btn>
       <v-btn icon large>
         <v-avatar size="32px" tile>
-          <img src="https://cdn.vuetifyjs.com/images/logos/logo.svg" alt="Vuetify">
+          <img src="./assets/logo.png" alt="Sessions">
         </v-avatar>
       </v-btn>
     </v-toolbar>
     <v-content>
       <v-container fluid fill-height>
-        <v-layout justify-center align-center>
+        <v-layout justify-center align-start>
           <Sessions/>
         </v-layout>
       </v-container>
