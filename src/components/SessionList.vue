@@ -22,34 +22,14 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { Session } from '../models/session';
+import { State } from 'vuex-class';
+import { Session } from '@/types';
 
 @Component
 export default class SessionList extends Vue {
+  @State
+  private sessions!: Session[];
   @Prop()
   private title!: string;
-  get sessions() {
-    return [
-      {
-        id: 1,
-        title: 'Intro to Web Components w/ Polymer',
-        description:
-          'Shallow dive in the kiddie pool will get you quite far w/ Polymer',
-        speaker: 'Eldridge Cleaver',
-        datetime: new Date('2001-01-01 12:00:00 PM'),
-        technology: 'vue',
-        tags: ['Web Components', 'Polymer', 'PWA']
-      } as Session,
-      {
-        id: 2,
-        title: 'VUE 102',
-        description: 'Troubles in the rear Vue',
-        speaker: 'Fred Hampton',
-        datetime: new Date('2001-02-01 09:00:00 AM'),
-        technology: 'angular',
-        tags: ['VueJS', 'PWA']
-      } as Session
-    ];
-  }
 }
 </script>
