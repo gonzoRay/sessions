@@ -1,7 +1,5 @@
 <template>
-  <div class="home">
-    <SessionList title="Lunch and Learn Sessions"/>
-  </div>
+  <SessionList title="Lunch and Learn Sessions"/>
 </template>
 
 <script lang="ts">

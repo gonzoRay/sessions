@@ -6,7 +6,7 @@ export const state: State = {
   sessions: [
     {
       id: 1,
-      title: 'Intro to Web Components w/ lit-html',
+      title: 'Intro to Web Components w/ lit',
       description:
         'Shallow dive in the kiddie pool will get you quite far w/ lit-html and lit-template',
       speaker: 'Eldridge Cleaver',
@@ -18,8 +18,36 @@ export const state: State = {
       title: 'VUE 102',
       description: 'Troubles in the rear Vue',
       speaker: 'Fred Hampton',
-      datetime: new Date('2001-02-01 09:00:00 AM'),
+      datetime: new Date('2018-02-01 09:00:00 AM'),
       tags: ['VueJS', 'PWA']
+    } as Session,
+    {
+      id: 3,
+      title: 'Angular Elements Unleashed',
+      description:
+        // tslint:disable-next-line:max-line-length
+        'Using Angular elements to do some really rad things like create bonafide Web Components. And then share them w/ your friends.',
+      speaker: 'Angela Davis',
+      datetime: new Date('2019-06-01 09:00:00 AM'),
+      tags: ['Angular', 'Web Components']
+    } as Session,
+    {
+      id: 4,
+      title: 'Intro to React',
+      description:
+        'React is a small view library. Let us take an initial look at this ever popular javascript library.',
+      speaker: 'Assata Shakur',
+      datetime: new Date('2019-04-01 09:00:00 AM'),
+      tags: ['Frontend', 'ES2015', 'React']
+    } as Session,
+    {
+      id: 5,
+      title: 'Advanced React w/ Redux',
+      description:
+        'Take a deeper dive w/ React by implementing a state pattern known as Redux.',
+      speaker: 'Paul Robeson',
+      datetime: new Date('2019-03-15 09:00:00 AM'),
+      tags: ['React', 'Redux']
     } as Session
   ]
 };

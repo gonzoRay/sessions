@@ -67,8 +67,8 @@
       </v-btn>
     </v-toolbar>
     <v-content>
-      <v-container fluid fill-height>
-        <v-layout justify-center align-start>
+      <v-container>
+        <v-layout align-start>
           <Sessions/>
         </v-layout>
       </v-container>
@@ -119,6 +119,7 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+    <v-footer app>Sessions &copy;2018</v-footer>
   </v-app>
 </template>
 
@@ -136,7 +137,8 @@ export default {
       dialog: false,
       drawer: null,
       items: [
-        { icon: 'event', text: 'Sessions' },
+        { icon: 'event', text: 'Upcoming Sessions' },
+        { icon: 'event', text: 'Past Sessions' },
         {
           icon: 'keyboard_arrow_up',
           'icon-alt': 'keyboard_arrow_down',
