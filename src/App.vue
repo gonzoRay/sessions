@@ -37,7 +37,9 @@
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-tile-action>
             <v-list-tile-content>
-              <v-list-tile-title>{{ item.text }}</v-list-tile-title>
+              <v-list-tile-title>
+                <router-link tag="li" :to="item.route">{{ item.text }}</router-link>
+              </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
         </template>
@@ -48,14 +50,14 @@
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
         <span>Sessions</span>
       </v-toolbar-title>
-      <v-text-field
+      <!-- <v-text-field
         flat
         solo-inverted
         hide-details
         prepend-inner-icon="search"
         label="Search"
         class="hidden-sm-and-down"
-      ></v-text-field>
+      ></v-text-field>-->
       <v-spacer></v-spacer>
       <v-btn icon>
         <v-icon>notifications</v-icon>
@@ -69,7 +71,7 @@
     <v-content>
       <v-container>
         <v-layout align-start>
-          <Sessions/>
+          <router-view/>
         </v-layout>
       </v-container>
     </v-content>
@@ -124,8 +126,8 @@
 </template>
 
 
-<script type="ts">
-import Sessions from './views/Sessions';
+<script lang="ts">
+import Sessions from './views/Sessions.vue';
 
 export default {
   name: 'App',
@@ -137,16 +139,18 @@ export default {
       dialog: false,
       drawer: null,
       items: [
-        { icon: 'event', text: 'Upcoming Sessions' },
-        { icon: 'event', text: 'Past Sessions' },
+        { icon: 'event', text: 'Sessions', route: '/sessions' },
+        // { icon: 'event', text: 'Past Sessions', route: '/sessions/past' },
+        { icon: 'star', text: 'Favorites', route: '/favorites' },
         {
           icon: 'keyboard_arrow_up',
           'icon-alt': 'keyboard_arrow_down',
           text: 'Tags',
           model: true,
-          children: [{ icon: 'add', text: 'Create tag' }]
+          children: [{ icon: 'add', text: 'Create tag' }],
+          route: '/tags'
         },
-        { icon: 'settings', text: 'Settings' }
+        { icon: 'settings', text: 'Settings', route: '/settings' }
       ]
     };
   },
@@ -155,3 +159,21 @@ export default {
   }
 };
 </script>
+
+<style lang="stylus">
+li {
+  cursor: pointer;
+}
+
+li.router-link-active {
+  color: #1565C0;
+}
+
+li.router-link-exact-active {
+  border-bottom: 1px solid #1565C0;
+}
+
+.v-footer {
+  padding-left: 5px;
+}
+</style>

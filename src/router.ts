@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import SessionList from './views/Sessions.vue';
+import Sessions from './views/Sessions.vue';
 
 Vue.use(Router);
 
@@ -9,8 +9,17 @@ export default new Router({
   routes: [
     {
       path: '/',
+      redirect: '/sessions'
+    },
+    {
+      path: '/sessions',
       name: 'sessions',
-      component: SessionList
+      component: Sessions
+    },
+    {
+      path: '/favorites',
+      name: 'favorites',
+      component: () => import('./views/Favorites.vue')
     },
     {
       path: '/about',

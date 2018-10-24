@@ -47,7 +47,8 @@ export const state: State = {
         'Take a deeper dive w/ React by implementing a state pattern known as Redux.',
       speaker: 'Paul Robeson',
       datetime: new Date('2019-03-15 09:00:00 AM'),
-      tags: ['React', 'Redux']
+      tags: ['React', 'Redux'],
+      isFavorite: true
     } as Session
   ]
 };
