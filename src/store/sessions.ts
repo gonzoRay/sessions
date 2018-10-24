@@ -16,7 +16,8 @@ export const state: State = {
     {
       id: 2,
       title: 'VUE 102',
-      description: 'Troubles in the rear Vue',
+      description: `Troubles in the rear Vue after you switch to Vue.JS. 
+        Mr. Hampton will show you how to make the most of your web experience.`,
       speaker: 'Fred Hampton',
       datetime: new Date('2018-02-01 09:00:00 AM'),
       tags: ['VueJS', 'PWA']
@@ -24,9 +25,8 @@ export const state: State = {
     {
       id: 3,
       title: 'Angular Elements Unleashed',
-      description:
-        // tslint:disable-next-line:max-line-length
-        'Using Angular elements to do some really rad things like create bonafide Web Components. And then share them w/ your friends.',
+      description: `Using Angular elements to do some really rad things like create bonafide Web Components. 
+        And then share them w/ your friends.`,
       speaker: 'Angela Davis',
       datetime: new Date('2019-06-01 09:00:00 AM'),
       tags: ['Angular', 'Web Components']
@@ -56,5 +56,6 @@ export const getters: GetterTree<State, any> = {
   upcoming: state =>
     state.sessions.filter(session => isBefore(new Date(), session.datetime)),
   past: state =>
-    state.sessions.filter(session => isBefore(new Date(), session.datetime))
+    state.sessions.filter(session => isBefore(session.datetime, new Date())),
+  favorites: state => state.sessions.filter(session => session.isFavorite)
 };
