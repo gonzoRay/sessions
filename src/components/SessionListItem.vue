@@ -25,7 +25,7 @@ import { Session } from '@/types';
 @Component
 export default class SessionListItem extends Vue {
   @Prop()
-  item!: Session;
+  private item!: Session;
 }
 </script>
 

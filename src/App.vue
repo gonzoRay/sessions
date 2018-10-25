@@ -80,41 +80,49 @@
     </v-btn>
     <v-dialog v-model="dialog" width="800px">
       <v-card>
-        <v-card-title class="grey lighten-4 py-4 title">Create contact</v-card-title>
+        <v-card-title class="grey lighten-4 py-4 title">Create session</v-card-title>
         <v-container grid-list-sm class="pa-4">
           <v-layout row wrap="">
             <v-flex xs12 align-center justify-space-between>
               <v-layout align-center>
-                <v-avatar size="40px" class="mr-3">
-                  <img src="//ssl.gstatic.com/s2/oz/images/sge/grey_silhouette.png" alt="">
-                </v-avatar>
-                <v-text-field placeholder="Name"></v-text-field>
+                <v-text-field prepend-icon="title" placeholder="Title"></v-text-field>
               </v-layout>
             </v-flex>
-            <v-flex xs6>
-              <v-text-field prepend-icon="business" placeholder="Company"></v-text-field>
-            </v-flex>
-            <v-flex xs6>
-              <v-text-field placeholder="Job title"></v-text-field>
+            <v-flex xs12>
+              <v-text-field prepend-icon="person_outline" placeholder="Speaker"></v-text-field>
             </v-flex>
             <v-flex xs12>
-              <v-text-field prepend-icon="mail" placeholder="Email"></v-text-field>
+              <v-menu
+                ref="menu2"
+                :close-on-content-click="false"
+                v-model="menu2"
+                :nudge-right="40"
+                :return-value.sync="datetime"
+                lazy
+                transition="scale-transition"
+                offset-y
+                full-width
+                min-width="290px"
+              >
+                <v-text-field
+                  slot="activator"
+                  v-model="datetime"
+                  label="Date of Session"
+                  prepend-icon="event"
+                  readonly
+                ></v-text-field>
+                <v-date-picker v-model="datetime" reactive="true"></v-date-picker>
+              </v-menu>
             </v-flex>
             <v-flex xs12>
-              <v-text-field
-                type="tel"
-                prepend-icon="phone"
-                placeholder="(000) 000 - 0000"
-                mask="phone"
-              ></v-text-field>
-            </v-flex>
-            <v-flex xs12>
-              <v-text-field prepend-icon="notes" placeholder="Notes"></v-text-field>
+              <v-textarea
+                prepend-icon="notes"
+                placeholder="Enter a brief description of your talk."
+              ></v-textarea>
             </v-flex>
           </v-layout>
         </v-container>
         <v-card-actions>
-          <v-btn flat color="primary">More</v-btn>
           <v-spacer></v-spacer>
           <v-btn flat color="primary" @click="dialog = false">Cancel</v-btn>
           <v-btn flat @click="dialog = false">Save</v-btn>
@@ -127,37 +135,41 @@
 
 
 <script lang="ts">
+import { Component, Prop, Vue } from 'vue-property-decorator';
 import Sessions from './views/Sessions.vue';
 
-export default {
-  name: 'App',
+@Component({
   components: {
     Sessions
-  },
-  data() {
-    return {
-      dialog: false,
-      drawer: null,
-      items: [
-        { icon: 'event', text: 'Sessions', route: '/sessions' },
-        // { icon: 'event', text: 'Past Sessions', route: '/sessions/past' },
-        { icon: 'star', text: 'Favorites', route: '/favorites' },
-        {
-          icon: 'keyboard_arrow_up',
-          'icon-alt': 'keyboard_arrow_down',
-          text: 'Tags',
-          model: true,
-          children: [{ icon: 'add', text: 'Create tag' }],
-          route: '/tags'
-        },
-        { icon: 'settings', text: 'Settings', route: '/settings' }
-      ]
-    };
-  },
-  props: {
-    source: String
   }
-};
+})
+export default class App extends Vue {
+  constructor() {
+    super();
+    this.dialog = false;
+    this.drawer = null;
+    this.items = [
+      { icon: 'event', text: 'Sessions', route: '/sessions' },
+      // { icon: 'event', text: 'Past Sessions', route: '/sessions/past' },
+      { icon: 'star', text: 'Favorites', route: '/favorites' },
+      {
+        icon: 'keyboard_arrow_up',
+        'icon-alt': 'keyboard_arrow_down',
+        text: 'Tags',
+        model: true,
+        children: [{ icon: 'add', text: 'Create tag' }],
+        route: '/tags'
+      },
+      { icon: 'settings', text: 'Settings', route: '/settings' }
+    ];
+  }
+  @Prop()
+  public source!: string;
+
+  public dialog: boolean;
+  public drawer: any;
+  public items: object[];
+}
 </script>
 
 <style lang="stylus">

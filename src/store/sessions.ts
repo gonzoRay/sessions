@@ -1,6 +1,6 @@
 import { Session, State } from '@/types';
 import isBefore from 'date-fns/is_before';
-import { GetterTree } from 'vuex';
+import { GetterTree, MutationTree } from 'vuex';
 
 export const state: State = {
   sessions: [
@@ -16,7 +16,7 @@ export const state: State = {
     {
       id: 2,
       title: 'VUE 102',
-      description: `Troubles in the rear Vue after you switch to Vue.JS. 
+      description: `Troubles in the rear Vue after you switch to Vue.JS.
         Mr. Hampton will show you how to make the most of your web experience.`,
       speaker: 'Fred Hampton',
       datetime: new Date('2018-02-01 09:00:00 AM'),
@@ -25,7 +25,7 @@ export const state: State = {
     {
       id: 3,
       title: 'Angular Elements Unleashed',
-      description: `Using Angular elements to do some really rad things like create bonafide Web Components. 
+      description: `Using Angular elements to do some really rad things like create bonafide Web Components.
         And then share them w/ your friends.`,
       speaker: 'Angela Davis',
       datetime: new Date('2019-06-01 09:00:00 AM'),
@@ -59,4 +59,11 @@ export const getters: GetterTree<State, any> = {
   past: state =>
     state.sessions.filter(session => isBefore(session.datetime, new Date())),
   favorites: state => state.sessions.filter(session => session.isFavorite)
+};
+
+export const mutations: MutationTree<State> = {
+  addSession(state, newSession) {
+    const sessionCopy = Object.assign({}, newSession);
+    state.sessions.push(sessionCopy);
+  }
 };

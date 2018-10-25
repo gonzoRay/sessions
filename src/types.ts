@@ -10,6 +10,6 @@ export interface Session {
   description: string;
   speaker: string;
   datetime: Date;
-  tags: string[];
+  tags?: string[];
   isFavorite?: boolean;
 }

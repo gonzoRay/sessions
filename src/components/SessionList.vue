@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
+import { Getter, Mutation } from 'vuex-class';
 import { Session } from '@/types';
 import SessionListItem from '@/components/SessionListItem.vue';
 
@@ -31,14 +31,25 @@ import SessionListItem from '@/components/SessionListItem.vue';
   }
 })
 export default class SessionList extends Vue {
+  @Prop()
+  public title!: string;
+  public tabs = ['Upcoming', 'Past'];
+
+  @Mutation
+  public addSession: any;
+
+  private newSession: Session = {
+    id: -1,
+    title: '',
+    description: '',
+    speaker: '',
+    datetime: new Date()
+  };
+
   @Getter
   private upcoming!: Session[];
   @Getter
   private past!: Session[];
-  @Prop()
-  private title!: string;
-
-  tabs = ['Upcoming', 'Past'];
 }
 </script>
 
