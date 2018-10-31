@@ -17,6 +17,12 @@ export default new Router({
       component: Sessions
     },
     {
+      path: '/sessions/:id/detail',
+      name: 'details',
+      component: () => import('./components/SessionDetail.vue'),
+      props: true
+    },
+    {
       path: '/favorites',
       name: 'favorites',
       component: () => import('./views/Favorites.vue')

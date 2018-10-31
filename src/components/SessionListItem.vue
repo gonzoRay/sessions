@@ -10,9 +10,11 @@
             <v-list-tile-sub-title>{{ item.description }}</v-list-tile-sub-title>
         </v-list-tile-content>
         <v-list-tile-action>
-            <v-btn icon ripple>
-                <v-icon color="grey lighten-1">chevron_right</v-icon>
-            </v-btn>
+            <router-link tag="li" :to="{name: 'details', params: { id: item.id, item: item }}">
+                <v-btn icon ripple>
+                    <v-icon color="grey lighten-1">chevron_right</v-icon>
+                </v-btn>
+            </router-link>
         </v-list-tile-action>
     </v-list-tile>
 </template>
@@ -30,4 +32,7 @@ export default class SessionListItem extends Vue {
 </script>
 
 <style>
+li a {
+  text-decoration: none;
+}
 </style>
