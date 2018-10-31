@@ -9,7 +9,7 @@ export interface Session {
   title: string;
   description: string;
   speaker: string;
-  datetime: Date;
+  datetime: string;
   tags?: string[];
   isFavorite?: boolean;
 }

@@ -85,20 +85,22 @@
           <v-layout row wrap="">
             <v-flex xs12 align-center justify-space-between>
               <v-layout align-center>
-                <v-text-field prepend-icon="title" placeholder="Title"></v-text-field>
+                <v-text-field v-model="newSession.title" prepend-icon="title" placeholder="Title"></v-text-field>
               </v-layout>
             </v-flex>
             <v-flex xs12>
-              <v-text-field prepend-icon="person_outline" placeholder="Speaker"></v-text-field>
+              <v-text-field
+                v-model="newSession.speaker"
+                prepend-icon="person_outline"
+                placeholder="Speaker"
+              ></v-text-field>
             </v-flex>
             <v-flex xs12>
               <v-menu
-                ref="menu2"
+                ref="dateMenu"
                 :close-on-content-click="false"
-                v-model="menu2"
+                v-model="dateMenu"
                 :nudge-right="40"
-                :return-value.sync="datetime"
-                lazy
                 transition="scale-transition"
                 offset-y
                 full-width
@@ -106,16 +108,18 @@
               >
                 <v-text-field
                   slot="activator"
-                  v-model="datetime"
+                  :value="dateFormatted"
                   label="Date of Session"
+                  clearable
                   prepend-icon="event"
                   readonly
                 ></v-text-field>
-                <v-date-picker v-model="datetime" reactive="true"></v-date-picker>
+                <v-date-picker v-model="newSession.datetime" @change="dateMenu = false"></v-date-picker>
               </v-menu>
             </v-flex>
             <v-flex xs12>
               <v-textarea
+                v-model="newSession.description"
                 prepend-icon="notes"
                 placeholder="Enter a brief description of your talk."
               ></v-textarea>
@@ -125,7 +129,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn flat color="primary" @click="dialog = false">Cancel</v-btn>
-          <v-btn flat @click="dialog = false">Save</v-btn>
+          <v-btn flat @click="saveSession(newSession)">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -137,6 +141,9 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Sessions from './views/Sessions.vue';
+import { Getter, Mutation } from 'vuex-class';
+import { Session } from './types';
+import format from 'date-fns/format';
 
 @Component({
   components: {
@@ -144,10 +151,39 @@ import Sessions from './views/Sessions.vue';
   }
 })
 export default class App extends Vue {
+  @Prop()
+  public source!: string;
+
+  public dateMenu: boolean;
+  public drawer: any;
+  public dialog: boolean;
+
+  public items: object[];
+  public newSession: Session = {} as Session;
+
+  get newDate(): string {
+    return this.newSession.datetime
+      ? new Date(this.newSession.datetime).toISOString().substr(0, 10)
+      : '';
+  }
+
+  set newDate(value) {
+    this.newSession.datetime = value;
+  }
+
+  get dateFormatted(): string | null {
+    return this.newDate ? format(this.newDate, 'dddd, MMMM Do YYYY') : '';
+  }
+
+  @Mutation
+  public addSession: any;
+
   constructor() {
     super();
-    this.dialog = false;
+    this.dateMenu = false;
     this.drawer = null;
+    this.dialog = false;
+
     this.items = [
       { icon: 'event', text: 'Sessions', route: '/sessions' },
       // { icon: 'event', text: 'Past Sessions', route: '/sessions/past' },
@@ -162,13 +198,27 @@ export default class App extends Vue {
       },
       { icon: 'settings', text: 'Settings', route: '/settings' }
     ];
-  }
-  @Prop()
-  public source!: string;
 
-  public dialog: boolean;
-  public drawer: any;
-  public items: object[];
+    this.resetNewSession();
+  }
+
+  public saveSession(data: Session): void {
+    this.addSession(data);
+    this.dialog = false;
+
+    this.resetNewSession();
+  }
+
+  private resetNewSession() {
+    this.newSession = {
+      id: -1,
+      title: '',
+      description: '',
+      datetime: '',
+      speaker: '',
+      tags: []
+    } as Session;
+  }
 }
 </script>
 

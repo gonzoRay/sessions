@@ -10,7 +10,7 @@ export const state: State = {
       description:
         'Shallow dive in the kiddie pool will get you quite far w/ lit-html and lit-template',
       speaker: 'Eldridge Cleaver',
-      datetime: new Date('2019-01-01 12:00:00 PM'),
+      datetime: '2019-01-01 12:00:00 PM',
       tags: ['Web Components', 'Polymer', 'PWA']
     } as Session,
     {
@@ -19,7 +19,7 @@ export const state: State = {
       description: `Troubles in the rear Vue after you switch to Vue.JS.
         Mr. Hampton will show you how to make the most of your web experience.`,
       speaker: 'Fred Hampton',
-      datetime: new Date('2018-02-01 09:00:00 AM'),
+      datetime: '2018-02-01 09:00:00 AM',
       tags: ['VueJS', 'PWA']
     } as Session,
     {
@@ -28,7 +28,7 @@ export const state: State = {
       description: `Using Angular elements to do some really rad things like create bonafide Web Components.
         And then share them w/ your friends.`,
       speaker: 'Angela Davis',
-      datetime: new Date('2019-06-01 09:00:00 AM'),
+      datetime: '2019-06-01 09:00:00 AM',
       tags: ['Angular', 'Web Components']
     } as Session,
     {
@@ -37,7 +37,7 @@ export const state: State = {
       description:
         'React is a small view library. Let us take an initial look at this ever popular javascript library.',
       speaker: 'Assata Shakur',
-      datetime: new Date('2019-04-01 09:00:00 AM'),
+      datetime: '2019-04-01 09:00:00 AM',
       tags: ['Frontend', 'ES2015', 'React']
     } as Session,
     {
@@ -46,7 +46,7 @@ export const state: State = {
       description:
         'Take a deeper dive w/ React by implementing a state pattern known as Redux.',
       speaker: 'Paul Robeson',
-      datetime: new Date('2019-03-15 09:00:00 AM'),
+      datetime: '2019-03-15 09:00:00 AM',
       tags: ['React', 'Redux'],
       isFavorite: true
     } as Session
@@ -55,7 +55,9 @@ export const state: State = {
 
 export const getters: GetterTree<State, any> = {
   upcoming: state =>
-    state.sessions.filter(session => isBefore(new Date(), session.datetime)),
+    state.sessions.filter(session =>
+      isBefore(new Date(), new Date(session.datetime))
+    ),
   past: state =>
     state.sessions.filter(session => isBefore(session.datetime, new Date())),
   favorites: state => state.sessions.filter(session => session.isFavorite)

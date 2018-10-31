@@ -35,15 +35,12 @@ export default class SessionList extends Vue {
   public title!: string;
   public tabs = ['Upcoming', 'Past'];
 
-  @Mutation
-  public addSession: any;
-
   private newSession: Session = {
     id: -1,
     title: '',
     description: '',
     speaker: '',
-    datetime: new Date()
+    datetime: ''
   };
 
   @Getter
