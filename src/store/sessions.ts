@@ -3,6 +3,7 @@ import isBefore from 'date-fns/is_before';
 import { GetterTree, MutationTree } from 'vuex';
 
 export const state: State = {
+  addSessionModalVisible: false,
   sessions: [
     {
       id: 1,
@@ -60,12 +61,19 @@ export const getters: GetterTree<State, any> = {
     ),
   past: state =>
     state.sessions.filter(session => isBefore(session.datetime, new Date())),
-  favorites: state => state.sessions.filter(session => session.isFavorite)
+  favorites: state => state.sessions.filter(session => session.isFavorite),
+  addSessionModalVisible: state => state.addSessionModalVisible
 };
 
 export const mutations: MutationTree<State> = {
   addSession(state, newSession) {
     const sessionCopy = Object.assign({}, newSession);
     state.sessions.push(sessionCopy);
+  },
+  showAddSessionModal(state) {
+    state.addSessionModalVisible = true;
+  },
+  hideAddSessionModal(state) {
+    state.addSessionModalVisible = false;
   }
 };
