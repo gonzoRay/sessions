@@ -24,21 +24,21 @@ import { State, Getter, Mutation } from 'vuex-class';
 export default class SessionDetail extends Vue {
   public item!: Session;
 
-  @Prop({ required: true })
-  private id!: string;
-
   @Getter
   public getSessionById!: (id: number) => Session;
-
-  created() {
-    this.item = this.getSessionById(parseInt(this.id, 10));
-  }
 
   @Mutation
   public toggleFavorite: any;
 
+  @Prop({ required: true })
+  private id!: string;
+
   constructor() {
     super();
+  }
+
+  public created() {
+    this.item = this.getSessionById(parseInt(this.id, 10));
   }
 }
 </script>
