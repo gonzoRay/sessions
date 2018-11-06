@@ -1,8 +1,8 @@
-import { Session, State } from '@/types';
+import { AppState, Session } from '@/types';
 import isBefore from 'date-fns/is_before';
 import { GetterTree, MutationTree } from 'vuex';
 
-export const state: State = {
+export const state: AppState = {
   addSessionModalVisible: false,
   sessions: [
     {
@@ -54,7 +54,9 @@ export const state: State = {
   ]
 };
 
-export const getters: GetterTree<State, any> = {
+export const getters: GetterTree<AppState, any> = {
+  getSessionById: (state: AppState) => (id: number): Session | undefined =>
+    state.sessions.find(s => s.id === id),
   upcoming: state =>
     state.sessions.filter(session =>
       isBefore(new Date(), new Date(session.datetime))
@@ -65,10 +67,16 @@ export const getters: GetterTree<State, any> = {
   addSessionModalVisible: state => state.addSessionModalVisible
 };
 
-export const mutations: MutationTree<State> = {
+export const mutations: MutationTree<AppState> = {
   addSession(state, newSession) {
     const sessionCopy = Object.assign({}, newSession);
     state.sessions.push(sessionCopy);
+  },
+  toggleFavorite(state, id) {
+    const session = state.sessions.find(s => s.id === id);
+    if (session) {
+      session.isFavorite = !session.isFavorite;
+    }
   },
   showAddSessionModal(state) {
     state.addSessionModalVisible = true;

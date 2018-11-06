@@ -1,5 +1,5 @@
 // Store
-export interface State {
+export interface AppState {
   addSessionModalVisible: boolean;
   sessions: Session[];
 }
