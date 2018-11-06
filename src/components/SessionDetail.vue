@@ -2,7 +2,10 @@
   <div>
     <v-card-title primary-title>
       <span class="headline">{{ item.title }}</span>
-      <v-icon class="favorite">{{ item.id === 1 ? 'turned_in' : 'turned_in_not' }}</v-icon>
+      <v-icon
+        class="favorite"
+        @click="toggleFavorite(item)"
+      >{{ item.isFavorite ? 'turned_in' : 'turned_in_not' }}</v-icon>
       <p class="subheading">{{ item.description }}</p>
     </v-card-title>
     <div>
@@ -15,7 +18,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { AppState, Session } from '@/types';
-import { State, Getter } from 'vuex-class';
+import { State, Getter, Mutation } from 'vuex-class';
 
 @Component({})
 export default class SessionDetail extends Vue {
@@ -30,6 +33,10 @@ export default class SessionDetail extends Vue {
   created() {
     this.item = this.getSessionById(parseInt(this.id, 10));
   }
+
+  @Mutation
+  public toggleFavorite: any;
+
   constructor() {
     super();
   }

@@ -12,7 +12,8 @@ export const state: AppState = {
         'Shallow dive in the kiddie pool will get you quite far w/ lit-html and lit-template',
       speaker: 'Eldridge Cleaver',
       datetime: '2019-01-01 12:00:00 PM',
-      tags: ['Web Components', 'Polymer', 'PWA']
+      tags: ['Web Components', 'Polymer', 'PWA'],
+      isFavorite: false
     } as Session,
     {
       id: 2,
@@ -21,7 +22,8 @@ export const state: AppState = {
         Mr. Hampton will show you how to make the most of your web experience.`,
       speaker: 'Fred Hampton',
       datetime: '2018-02-01 09:00:00 AM',
-      tags: ['VueJS', 'PWA']
+      tags: ['VueJS', 'PWA'],
+      isFavorite: false
     } as Session,
     {
       id: 3,
@@ -30,7 +32,8 @@ export const state: AppState = {
         And then share them w/ your friends.`,
       speaker: 'Angela Davis',
       datetime: '2019-06-01 09:00:00 AM',
-      tags: ['Angular', 'Web Components']
+      tags: ['Angular', 'Web Components'],
+      isFavorite: false
     } as Session,
     {
       id: 4,
@@ -39,7 +42,8 @@ export const state: AppState = {
         'React is a small view library. Let us take an initial look at this ever popular javascript library.',
       speaker: 'Assata Shakur',
       datetime: '2019-04-01 09:00:00 AM',
-      tags: ['Frontend', 'ES2015', 'React']
+      tags: ['Frontend', 'ES2015', 'React'],
+      isFavorite: false
     } as Session,
     {
       id: 5,
@@ -72,11 +76,8 @@ export const mutations: MutationTree<AppState> = {
     const sessionCopy = Object.assign({}, newSession);
     state.sessions.push(sessionCopy);
   },
-  toggleFavorite(state, id) {
-    const session = state.sessions.find(s => s.id === id);
-    if (session) {
-      session.isFavorite = !session.isFavorite;
-    }
+  toggleFavorite(state, session) {
+    session.isFavorite = !session.isFavorite;
   },
   showAddSessionModal(state) {
     state.addSessionModalVisible = true;
