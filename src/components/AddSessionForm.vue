@@ -100,6 +100,7 @@ export default class AddSessionForm extends Vue {
       description: '',
       datetime: '',
       speaker: '',
+      isFavorite: false,
       tags: []
     } as Session;
 
@@ -119,6 +120,7 @@ export default class AddSessionForm extends Vue {
       description: '',
       datetime: '',
       speaker: '',
+      isFavorite: false,
       tags: []
     } as Session;
   }
