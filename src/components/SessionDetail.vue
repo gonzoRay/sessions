@@ -1,14 +1,15 @@
 <template>
   <div>
-    <v-card-title primary-title>
-      <span class="headline">{{ item.title }}</span>
+    <div class="title">
+      {{ item.title }}
       <v-icon
         class="favorite"
         @click="toggleFavorite(item)"
       >{{ item.isFavorite ? 'turned_in' : 'turned_in_not' }}</v-icon>
-      <p class="subheading">{{ item.description }}</p>
-    </v-card-title>
-    <div>
+    </div>
+    <span class="speaker">{{ item.speaker }}</span>
+    <div class="subheading">{{ item.description }}</div>
+    <div class="tags">
       <v-chip v-for="tag in item.tags" :key="tag">{{ tag }}</v-chip>
     </div>
     <v-card-actions></v-card-actions>
@@ -47,5 +48,13 @@ export default class SessionDetail extends Vue {
 .favorite {
   cursor: pointer;
   padding-left: 10px;
+}
+
+.subheading {
+  margin-top: 20px;
+}
+
+.tags {
+  padding-top: 15px;
 }
 </style>
