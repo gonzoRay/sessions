@@ -46,7 +46,10 @@
       </v-list>
     </v-navigation-drawer>
     <v-toolbar :clipped-left="$vuetify.breakpoint.lgAndUp" color="blue darken-3" dark app fixed>
-      <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
+      <v-toolbar-title style="width: 300px" class="ml-0">
+        <v-btn icon class="hidden-xs-only" v-if="showBack()" @click="back()">
+          <v-icon>arrow_back</v-icon>
+        </v-btn>
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
         <span>Sessions</span>
       </v-toolbar-title>
@@ -109,6 +112,14 @@ export default class App extends Vue {
 
   @Mutation
   public showAddSessionModal!: void;
+
+  public back(): void {
+    this.$router.go(-1);
+  }
+
+  public showBack(): boolean {
+    return this.$route.name == 'details';
+  }
 
   constructor() {
     super();
