@@ -75,6 +75,7 @@
       <v-container>
         <v-layout align-start>
           <router-view/>
+          <v-snackbar v-model="showSnackbar" :color="'success'" :bottom="true">{{ snackbarText }}</v-snackbar>
         </v-layout>
       </v-container>
     </v-content>
@@ -92,7 +93,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import AppModal from './components/AppModal.vue';
 import AddSessionForm from '@/components/AddSessionForm.vue';
 import Sessions from './views/Sessions.vue';
-import { Getter, Mutation } from 'vuex-class';
+import { Getter, Mutation, Action } from 'vuex-class';
 import { Session } from './types';
 import format from 'date-fns/format';
 
@@ -110,16 +111,14 @@ export default class App extends Vue {
   public drawer: any;
   public items: object[];
 
+  @Getter
+  public showSnackbar!: boolean;
+
+  @Getter
+  public snackbarText!: string;
+
   @Mutation
   public showAddSessionModal!: void;
-
-  public back(): void {
-    this.$router.go(-1);
-  }
-
-  public showBack(): boolean {
-    return this.$route.name == 'details';
-  }
 
   constructor() {
     super();
@@ -141,6 +140,14 @@ export default class App extends Vue {
       { icon: 'settings', text: 'Settings', route: '/settings' }
     ];
   }
+
+  public back(): void {
+    this.$router.go(-1);
+  }
+
+  public showBack(): boolean {
+    return this.$route.name === 'details';
+  }
 }
 </script>
 
@@ -159,5 +166,10 @@ li.router-link-exact-active {
 
 .v-footer {
   padding-left: 5px;
+}
+
+.button-link {
+  cursor: pointer;
+  color: var(--v-primary-base);
 }
 </style>
