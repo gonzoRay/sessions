@@ -12,34 +12,48 @@
     <div class="tags">
       <v-chip v-for="tag in item.tags" :key="tag">{{ tag }}</v-chip>
     </div>
-    <v-card-actions></v-card-actions>
+    <v-card-actions>
+      <v-btn @click="deleteSession(item.id)">Delete</v-btn>
+    </v-card-actions>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { AppState, Session } from '@/types';
-import { State, Getter, Mutation } from 'vuex-class';
+import { State, Getter, Mutation, Action } from 'vuex-class';
 
 @Component({})
 export default class SessionDetail extends Vue {
   public item!: Session;
 
   @Getter
-  public getSessionById!: (id: number) => Session;
+  public getSessionById!: (id: string) => Session;
 
   @Mutation
   public toggleFavorite: any;
 
+  @Action
+  public deleteSessionAsync: any;
+
+  @Action
+  public showAlert: any;
+
   @Prop({ required: true })
   private id!: string;
+
+  public deleteSession(id: string): void {
+    this.deleteSessionAsync(id);
+    this.$router.replace('/sessions');
+    this.showAlert('Session deleted');
+  }
 
   constructor() {
     super();
   }
 
   public created() {
-    this.item = this.getSessionById(parseInt(this.id, 10));
+    this.item = this.getSessionById(this.id);
   }
 }
 </script>
