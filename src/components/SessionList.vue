@@ -7,6 +7,10 @@
           <SessionListItem :key="item.id" :item="item"/>
         </template>
       </v-list>
+      <div class="empty-list" v-if="!upcoming.length">
+        <span class="display-1">No upcoming sessions</span>
+        <p class="button-link headline" @click="showAddSessionModal()">Add a new session!</p>
+      </div>
     </v-tab-item>
     <v-tab-item>
       <v-list two-line subheader>
@@ -35,13 +39,8 @@ export default class SessionList extends Vue {
   public title!: string;
   public tabs = ['Upcoming', 'Past'];
 
-  private newSession: Session = {
-    id: -1,
-    title: '',
-    description: '',
-    speaker: '',
-    datetime: ''
-  };
+  @Mutation
+  public showAddSessionModal!: void;
 
   @Getter
   private upcoming!: Session[];
@@ -51,5 +50,12 @@ export default class SessionList extends Vue {
 </script>
 
 <style lang="stylus">
+.empty-list {
+  .display-1 {
+    margin-bottom: 5px;
+  }
+
+  padding: 20px;
+}
 </style>
 
