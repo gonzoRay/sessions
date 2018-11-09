@@ -11,9 +11,11 @@
   "dependencies": {
     "@babel/polyfill": "^7.0.0-rc.1",
     "date-fns": "^1.29.0",
+    "firebase": "^5.5.7",
     "register-service-worker": "^1.0.0",
     "vue": "^2.5.17",
     "vue-class-component": "^6.0.0",
+    "vue-firestore": "^0.3.1",
     "vue-property-decorator": "^7.0.0",
     "vue-router": "^3.0.1",
     "vuetify": "^1.3.0",
