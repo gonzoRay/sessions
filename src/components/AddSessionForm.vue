@@ -71,7 +71,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { Getter, Mutation } from 'vuex-class';
+import { Getter, Mutation, Action } from 'vuex-class';
 import { mutations } from '@/store/sessions';
 import { Session } from '@/types';
 import format from 'date-fns/format';
@@ -83,8 +83,8 @@ export default class AddSessionForm extends Vue {
   @Getter
   public addSessionModalVisible!: boolean;
 
-  @Mutation
-  public addSession: any;
+  @Action
+  public addSessionAsync: any;
 
   @Mutation
   public hideAddSessionModal: any;
@@ -95,7 +95,7 @@ export default class AddSessionForm extends Vue {
     super();
 
     this.newSession = {
-      id: -1,
+      id: '',
       title: '',
       description: '',
       datetime: '',
@@ -108,14 +108,14 @@ export default class AddSessionForm extends Vue {
   }
 
   public saveSession(data: Session): void {
-    this.addSession(data);
+    this.addSessionAsync(data);
     this.resetNewSession();
     this.hideAddSessionModal();
   }
 
   private resetNewSession() {
     this.newSession = {
-      id: -1,
+      id: '',
       title: '',
       description: '',
       datetime: '',
