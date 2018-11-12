@@ -75,7 +75,7 @@
       <v-container>
         <v-layout align-start>
           <router-view/>
-          <v-snackbar v-model="showSnackbar" :color="'success'" :bottom="true">{{ snackbarText }}</v-snackbar>
+          <v-snackbar :value="showSnackbar" :color="'success'" :bottom="true">{{ snackbarText }}</v-snackbar>
         </v-layout>
       </v-container>
     </v-content>
