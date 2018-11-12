@@ -3,7 +3,8 @@ export interface AppState {
   addSessionModalVisible: boolean;
   isLoading: boolean;
   snackbar: Snackbar;
-  sessions: any;
+  sessions: Session[];
+  allTags: Tag[];
   sessionsDemo: any;
 }
 
@@ -16,6 +17,10 @@ export interface Session {
   datetime: string;
   tags?: string[];
   isFavorite?: boolean;
+}
+
+export interface Tag {
+  tagName: string;
 }
 
 export interface Snackbar {

@@ -1,12 +1,15 @@
 <template>
     <div>
-        <h5 class="headline">Favorites</h5>
+        <h5 class="headline">
+            Tagged as:
+            <span class="tag-name font-italic">{{ name }}</span>
+        </h5>
         <v-list two-line subheader>
-            <template v-for="item in favorites">
+            <template v-for="item in tagged">
                 <SessionListItem :key="item.id" :item="item"/>
             </template>
         </v-list>
-        <NoSessionsFound hideAddNew="true" v-if="!favorites.length"/>
+        <NoSessionsFound hideAddNew="true" v-if="!tagged.length"/>
         <Loading/>
     </div>
 </template>
@@ -27,12 +30,24 @@ import Loading from '@/components/Loading.vue';
     Loading
   }
 })
-export default class FavoritesList extends Vue {
+export default class Tag extends Vue {
+  public tagged: Session[] = [];
+
+  @Prop({ required: true })
+  public name!: string;
+
   @Getter
-  private favorites!: Session[];
+  private getSessionsByTagName!: (tagName: string) => Session[];
+
+  created() {
+    this.tagged = this.getSessionsByTagName(this.name);
+  }
 }
 </script>
 
 <style lang="stylus">
+.tag-name {
+    color: var(--v-primary-base);
+}
 </style>
 

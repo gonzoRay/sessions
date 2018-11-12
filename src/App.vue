@@ -28,7 +28,13 @@
                 <v-icon>{{ child.icon }}</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
-                <v-list-tile-title>{{ child.text }}</v-list-tile-title>
+                <v-list-tile-title v-if="child.route">
+                  <router-link
+                    tag="li"
+                    :to="{name: 'tag', params: {name: child.text }}"
+                  >{{ child.text }}</router-link>
+                </v-list-tile-title>
+                <v-list-tile-title v-else>{{ child.text }}</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
           </v-list-group>
@@ -134,7 +140,18 @@ export default class App extends Vue {
         'icon-alt': 'keyboard_arrow_down',
         text: 'Tags',
         model: true,
-        children: [{ icon: 'add', text: 'Create tag' }],
+        children: [
+          {
+            icon: 'label',
+            text: 'Angular',
+            route: `/tag/angular`
+          },
+          {
+            icon: 'label',
+            text: 'Vue',
+            route: `/tag/vue`
+          }
+        ],
         route: '/tags'
       },
       { icon: 'settings', text: 'Settings', route: '/settings' }

@@ -12,6 +12,7 @@ export const state: AppState = {
     snackbarText: ''
   },
   sessions: [],
+  allTags: [],
   sessionsDemo: [
     {
       id: '1',
@@ -69,6 +70,11 @@ export const state: AppState = {
 export const getters: GetterTree<AppState, any> = {
   getSessionById: (state: AppState) => (id: string): Session | undefined =>
     state.sessions.find(s => s.id === id),
+  getSessionsByTagName: (state: AppState) => (tagName: string): Session[] => {
+    return state.sessions.filter(s =>
+      s.tags!.some(t => t.toLowerCase() === tagName.toLowerCase())
+    );
+  },
   upcoming: state =>
     state.sessions.filter(session =>
       isBefore(new Date(), new Date(session.datetime))
@@ -79,7 +85,8 @@ export const getters: GetterTree<AppState, any> = {
   addSessionModalVisible: state => state.addSessionModalVisible,
   isLoading: state => state.isLoading,
   showSnackbar: state => state.snackbar.showSnackbar,
-  snackbarText: state => state.snackbar.snackbarText
+  snackbarText: state => state.snackbar.snackbarText,
+  allTags: state => state.allTags
 };
 
 export const mutations: MutationTree<AppState> = {
@@ -136,6 +143,7 @@ export const actions: ActionTree<AppState, any> = {
         console.error('Error getting documents', err);
       });
   },
+  loadAllTagsAsync({ commit }) {},
   addSessionAsync({ commit }, newSession: Session) {
     db.collection('sessions')
       .add(newSession)
@@ -152,7 +160,3 @@ export const actions: ActionTree<AppState, any> = {
     commit('showSnackbarAlert', text);
   }
 };
-
-async function stall(stallTime = 3000) {
-  await new Promise(resolve => setTimeout(resolve, stallTime));
-}

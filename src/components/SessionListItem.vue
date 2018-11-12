@@ -1,9 +1,5 @@
 <template>
-    <router-link
-        tag="li"
-        v-bind:key="item.id"
-        :to="{name: 'details', params: { id: item.id, item: item }}"
-    >
+    <router-link tag="li" v-bind:key="item.id" :to="{name: 'details', params: { id: item.id }}">
         <v-list-tile :key="item.id" avatar>
             <v-list-tile-avatar>
                 <v-avatar>

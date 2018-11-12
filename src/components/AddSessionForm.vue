@@ -57,6 +57,16 @@
                                 required
                             ></v-textarea>
                         </v-flex>
+                        <v-flex xs12>
+                            <v-combobox
+                                prepend-icon="label"
+                                v-model="newSession.tags"
+                                :items="availableTags"
+                                label="Tags"
+                                multiple
+                                chips
+                            ></v-combobox>
+                        </v-flex>
                     </v-layout>
                 </v-container>
             </v-card-text>
@@ -88,6 +98,8 @@ export default class AddSessionForm extends Vue {
 
   @Mutation
   public hideAddSessionModal: any;
+
+  public availableTags = ['Angular', 'Vue', 'Web Components'];
 
   public newSession: Session = {} as Session;
 

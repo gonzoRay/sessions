@@ -28,6 +28,12 @@ export default new Router({
       component: () => import('./views/Favorites.vue')
     },
     {
+      path: '/tag/:name',
+      name: 'tag',
+      component: () => import('./views/Tag.vue'),
+      props: true
+    },
+    {
       path: '/about',
       name: 'about',
       // route level code-splitting
