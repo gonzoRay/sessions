@@ -42,14 +42,14 @@ export default class SessionDetail extends Vue {
   @Prop({ required: true })
   private id!: string;
 
+  constructor() {
+    super();
+  }
+
   public deleteSession(id: string): void {
     this.deleteSessionAsync(id);
     this.$router.replace('/sessions');
     this.showAlert('Session deleted');
-  }
-
-  constructor() {
-    super();
   }
 
   public created() {
