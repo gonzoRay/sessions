@@ -1,6 +1,7 @@
 // Store
 export interface AppState {
   addSessionModalVisible: boolean;
+  isLoading: boolean;
   snackbar: Snackbar;
   sessions: any;
   sessionsDemo: any;

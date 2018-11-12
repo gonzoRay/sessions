@@ -4,35 +4,14 @@ import { ActionTree, GetterTree, MutationTree } from 'vuex';
 
 import db from './db';
 
-// TODO: Move this to an action: LoadSessionsAsync
-const sessionsData: Session[] = [];
-db.collection('sessions')
-  .get()
-  .then(snapshot => {
-    snapshot.forEach(doc => {
-      const sessionDocData = doc.data();
-      sessionsData.push({
-        id: doc.id,
-        title: sessionDocData.title,
-        description: sessionDocData.description,
-        speaker: sessionDocData.speaker,
-        datetime: sessionDocData.datetime,
-        tags: sessionDocData.tags
-      } as Session);
-    });
-  })
-  .catch(err => {
-    // TODO: Add logging service
-    console.error('Error getting documents', err);
-  });
-
 export const state: AppState = {
   addSessionModalVisible: false,
+  isLoading: false,
   snackbar: {
     showSnackbar: false,
     snackbarText: ''
   },
-  sessions: sessionsData || [],
+  sessions: [],
   sessionsDemo: [
     {
       id: '1',
@@ -88,7 +67,6 @@ export const state: AppState = {
 };
 
 export const getters: GetterTree<AppState, any> = {
-  demo: state => state.sessionsDemo,
   getSessionById: (state: AppState) => (id: string): Session | undefined =>
     state.sessions.find(s => s.id === id),
   upcoming: state =>
@@ -99,11 +77,16 @@ export const getters: GetterTree<AppState, any> = {
     state.sessions.filter(session => isBefore(session.datetime, new Date())),
   favorites: state => state.sessions.filter(session => session.isFavorite),
   addSessionModalVisible: state => state.addSessionModalVisible,
+  isLoading: state => state.isLoading,
   showSnackbar: state => state.snackbar.showSnackbar,
   snackbarText: state => state.snackbar.snackbarText
 };
 
 export const mutations: MutationTree<AppState> = {
+  loadSessions(state, sessions: Session[]) {
+    state.isLoading = false;
+    state.sessions = sessions;
+  },
   addSession(state, newSession) {
     const sessionCopy = Object.assign({}, newSession);
     state.sessions.push(sessionCopy);
@@ -128,6 +111,31 @@ export const mutations: MutationTree<AppState> = {
 };
 
 export const actions: ActionTree<AppState, any> = {
+  loadSessionsAsync({ commit }) {
+    const loadedSessions: Session[] = [];
+    state.isLoading = true;
+    db.collection('sessions')
+      .get()
+      .then(snapshot => {
+        snapshot.forEach(doc => {
+          const sessionDocData = doc.data();
+          loadedSessions.push({
+            id: doc.id,
+            title: sessionDocData.title,
+            description: sessionDocData.description,
+            speaker: sessionDocData.speaker,
+            datetime: sessionDocData.datetime,
+            tags: sessionDocData.tags
+          } as Session);
+        });
+
+        commit('loadSessions', loadedSessions);
+      })
+      .catch(err => {
+        // TODO: Add logging service
+        console.error('Error getting documents', err);
+      });
+  },
   addSessionAsync({ commit }, newSession: Session) {
     db.collection('sessions')
       .add(newSession)
@@ -144,3 +152,7 @@ export const actions: ActionTree<AppState, any> = {
     commit('showSnackbarAlert', text);
   }
 };
+
+async function stall(stallTime = 3000) {
+  await new Promise(resolve => setTimeout(resolve, stallTime));
+}
