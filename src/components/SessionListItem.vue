@@ -11,7 +11,7 @@
                     {{ item.title }}
                     <v-icon
                         class="favorite"
-                        @click="toggleSessionFavorite($event, item)"
+                        @click.prevent="toggleFavoriteAsync(item)"
                     >{{ item.isFavorite ? 'turned_in' : 'turned_in_not' }}</v-icon>
                 </v-list-tile-title>
                 <v-list-tile-sub-title>{{ item.description }}</v-list-tile-sub-title>
@@ -29,20 +29,15 @@
 import Vue from 'vue';
 import { Component, Prop } from 'vue-property-decorator';
 import { Session } from '@/types';
-import { Mutation } from 'vuex-class';
+import { Action } from 'vuex-class';
 
 @Component
 export default class SessionListItem extends Vue {
   @Prop()
   private item!: Session;
 
-  @Mutation
-  private toggleFavorite: any;
-
-  public toggleSessionFavorite(event: any, sessionItem: Session): any {
-    this.toggleFavorite(sessionItem);
-    event.preventDefault();
-  }
+  @Action
+  private toggleFavoriteAsync: any;
 }
 </script>
 
