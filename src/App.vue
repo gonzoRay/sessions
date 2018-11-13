@@ -23,18 +23,18 @@
                 <v-list-tile-title>{{ item.text }}</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile v-for="(child, i) in item.children" :key="i">
-              <v-list-tile-action v-if="child.icon">
-                <v-icon>{{ child.icon }}</v-icon>
+            <v-list-tile v-for="(tag, i) in getTags()" :key="i">
+              <v-list-tile-action v-if="tag.icon">
+                <v-icon>{{ tag.icon }}</v-icon>
               </v-list-tile-action>
               <v-list-tile-content>
-                <v-list-tile-title v-if="child.route">
+                <v-list-tile-title v-if="tag.route">
                   <router-link
                     tag="li"
-                    :to="{name: 'tag', params: {name: child.text }}"
-                  >{{ child.text }}</router-link>
+                    :to="{name: 'tag', params: {name: tag.text }}"
+                  >{{ tag.text }}</router-link>
                 </v-list-tile-title>
-                <v-list-tile-title v-else>{{ child.text }}</v-list-tile-title>
+                <v-list-tile-title v-else>{{ tag.text }}</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
           </v-list-group>
@@ -68,6 +68,9 @@
         class="hidden-sm-and-down"
       ></v-text-field>-->
       <v-spacer></v-spacer>
+      <v-btn icon @click.prevent="loadSessionsAsync()">
+        <v-icon>refresh</v-icon>
+      </v-btn>
       <v-btn icon>
         <v-icon>notifications</v-icon>
       </v-btn>
@@ -115,7 +118,10 @@ export default class App extends Vue {
 
   public dateMenu: boolean;
   public drawer: any;
-  public items: object[];
+  public items: any[];
+
+  @Getter
+  public allTags!: string[];
 
   @Getter
   public showSnackbar!: boolean;
@@ -125,6 +131,9 @@ export default class App extends Vue {
 
   @Mutation
   public showAddSessionModal!: void;
+
+  @Action
+  public loadSessionsAsync!: void;
 
   constructor() {
     super();
@@ -140,30 +149,39 @@ export default class App extends Vue {
         'icon-alt': 'keyboard_arrow_down',
         text: 'Tags',
         model: true,
-        children: [
-          {
-            icon: 'label',
-            text: 'Angular',
-            route: `/tag/angular`
-          },
-          {
-            icon: 'label',
-            text: 'Vue',
-            route: `/tag/vue`
-          }
-        ],
         route: '/tags'
       },
       { icon: 'settings', text: 'Settings', route: '/settings' }
     ];
   }
 
-  public back(): void {
+  private back(): void {
     this.$router.go(-1);
   }
 
-  public showBack(): boolean {
+  private showBack(): boolean {
     return this.$route.name === 'details';
+  }
+
+  private mounted() {
+    this.insertTagsSubmenu();
+  }
+
+  private insertTagsSubmenu() {
+    const tagNodeIndex = this.items.findIndex(
+      (i: any) => i.text === 'Tags'
+    ) as any;
+    this.items[tagNodeIndex].children = this.getTags();
+  }
+
+  private getTags() {
+    return this.allTags.map(t => {
+      return {
+        icon: 'label',
+        text: t,
+        route: `/tag/${t.toLowerCase()}`
+      };
+    });
   }
 }
 </script>

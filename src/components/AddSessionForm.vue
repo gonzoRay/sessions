@@ -65,6 +65,7 @@
                                 label="Tags"
                                 multiple
                                 chips
+                                deletable-chips
                             ></v-combobox>
                         </v-flex>
                     </v-layout>

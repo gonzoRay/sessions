@@ -4,9 +4,43 @@ import { ActionTree, GetterTree, MutationTree } from 'vuex';
 
 import db from './db';
 
+const sessionCollection = db.collection('sessions');
+const tagCollection = db.collection('tags');
+
+const mapSessionsDocument = (doc, sessions) => {
+  const sessionDocData = doc.data();
+  sessions.push({
+    id: doc.id,
+    title: sessionDocData.title,
+    description: sessionDocData.description,
+    speaker: sessionDocData.speaker,
+    datetime: sessionDocData.datetime,
+    tags: sessionDocData.tags,
+    isFavorite: sessionDocData.isFavorite
+  } as Session);
+};
+
+// Create subscription to sessions Firestore collection in Firebase
+sessionCollection.onSnapshot(sessionsRef => {
+  state.isLoading = true;
+  const sessions: Session[] = [];
+  sessionsRef.forEach(doc => mapSessionsDocument(doc, sessions));
+  state.sessions = sessions;
+  state.isLoading = false;
+});
+
+tagCollection.onSnapshot(tagRef => {
+  state.isLoading = true;
+  state.allTags = [];
+  tagRef.forEach(tagDoc => {
+    state.allTags.push(tagDoc.data()['name']);
+  });
+  state.isLoading = false;
+});
+
 export const state: AppState = {
   addSessionModalVisible: false,
-  isLoading: false,
+  isLoading: true,
   snackbar: {
     showSnackbar: false,
     snackbarText: ''
@@ -94,14 +128,6 @@ export const mutations: MutationTree<AppState> = {
     state.isLoading = false;
     state.sessions = sessions;
   },
-  addSession(state, newSession) {
-    const sessionCopy = Object.assign({}, newSession);
-    state.sessions.push(sessionCopy);
-  },
-  deleteSession(state, id) {
-    const index = state.sessions.findIndex(s => s.id === id);
-    state.sessions.splice(index, 1);
-  },
   toggleFavorite(state, session) {
     session.isFavorite = !session.isFavorite;
   },
@@ -118,43 +144,36 @@ export const mutations: MutationTree<AppState> = {
 };
 
 export const actions: ActionTree<AppState, any> = {
-  loadSessionsAsync({ commit }) {
+  loadSessionsAsync() {
     const loadedSessions: Session[] = [];
     state.isLoading = true;
-    db.collection('sessions')
+    sessionCollection
       .get()
-      .then(snapshot => {
-        snapshot.forEach(doc => {
-          const sessionDocData = doc.data();
-          loadedSessions.push({
-            id: doc.id,
-            title: sessionDocData.title,
-            description: sessionDocData.description,
-            speaker: sessionDocData.speaker,
-            datetime: sessionDocData.datetime,
-            tags: sessionDocData.tags
-          } as Session);
-        });
-
-        commit('loadSessions', loadedSessions);
-      })
-      .catch(err => {
-        // TODO: Add logging service
-        console.error('Error getting documents', err);
-      });
+      .then(sessionsRef =>
+        sessionsRef.forEach(doc => mapSessionsDocument(doc, loadedSessions))
+      )
+      .finally(() => (state.isLoading = false));
   },
-  loadAllTagsAsync({ commit }) {},
-  addSessionAsync({ commit }, newSession: Session) {
-    db.collection('sessions')
-      .add(newSession)
-      .then(newDocument => {
-        newSession.id = newDocument.id;
-        commit('addSession', newSession);
+  addSessionAsync(state, newSession: Session) {
+    sessionCollection.add(newSession).then(() => {
+      const newTags = newSession.tags || [];
+      newTags.forEach(t => {
+        const tagQuery = tagCollection.where('name', '==', t).get();
+        tagQuery.then(result => {
+          if (result.empty) {
+            tagCollection.add({ name: t });
+          }
+        });
       });
+    });
+  },
+  toggleFavoriteAsync(state, session: Session) {
+    const docRef = sessionCollection.doc(session.id);
+    docRef.update({ isFavorite: !session.isFavorite }).then();
   },
   deleteSessionAsync({ commit }, id: string) {
-    const docRef = db.collection('sessions').doc(id);
-    docRef.delete().then(() => commit('deleteSession', id));
+    const docRef = sessionCollection.doc(id);
+    docRef.delete().then();
   },
   showAlert({ commit }, text: string) {
     commit('showSnackbarAlert', text);

@@ -39,7 +39,7 @@ export default class Tag extends Vue {
   @Getter
   private getSessionsByTagName!: (tagName: string) => Session[];
 
-  created() {
+  private created() {
     this.tagged = this.getSessionsByTagName(this.name);
   }
 }
