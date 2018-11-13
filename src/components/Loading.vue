@@ -1,5 +1,5 @@
 <template>
-    <v-progress-linear v-if="isLoading" :indeterminate="true"></v-progress-linear>
+  <v-progress-linear v-if="isLoading" :indeterminate="true"></v-progress-linear>
 </template>
 
 <script lang="ts">
@@ -14,4 +14,7 @@ export default class Loading extends Vue {
 </script>
 
 <style lang="stylus">
+.v-progress-linear__bar {
+  padding: 25px;
+}
 </style>

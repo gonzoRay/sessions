@@ -2,7 +2,7 @@
     <div class="empty-list" v-if="!isLoading">
         <span class="display-1">Nothing here!</span>
         <p
-            v-if="!!!hideAddNew"
+            v-if="!!hideAddNew === false"
             class="button-link headline"
             @click="showAddSessionModal()"
         >Add a new session</p>
@@ -16,13 +16,13 @@ import { Mutation, Getter } from 'vuex-class';
 @Component({})
 export default class NoSessionsFound extends Vue {
   @Prop()
-  hideAddNew?: boolean;
+  private hideAddNew?: boolean;
 
   @Mutation
-  public showAddSessionModal!: void;
+  private showAddSessionModal!: void;
 
   @Getter
-  public isLoading!: boolean;
+  private isLoading!: boolean;
 }
 </script>
 

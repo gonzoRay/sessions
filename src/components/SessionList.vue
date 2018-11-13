@@ -49,12 +49,6 @@ export default class SessionList extends Vue {
   private upcoming!: Session[];
   @Getter
   private past!: Session[];
-  @Action
-  private loadSessionsAsync: any;
-
-  created() {
-    this.loadSessionsAsync();
-  }
 }
 </script>
 
