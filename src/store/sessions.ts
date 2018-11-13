@@ -7,24 +7,22 @@ import db from './db';
 const sessionCollection = db.collection('sessions');
 const tagCollection = db.collection('tags');
 
-const mapSessionsDocument = (doc, sessions) => {
-  const sessionDocData = doc.data();
-  sessions.push({
-    id: doc.id,
-    title: sessionDocData.title,
-    description: sessionDocData.description,
-    speaker: sessionDocData.speaker,
-    datetime: sessionDocData.datetime,
-    tags: sessionDocData.tags,
-    isFavorite: sessionDocData.isFavorite
-  } as Session);
-};
-
 // Create subscription to sessions Firestore collection in Firebase
 sessionCollection.onSnapshot(sessionsRef => {
   state.isLoading = true;
   const sessions: Session[] = [];
-  sessionsRef.forEach(doc => mapSessionsDocument(doc, sessions));
+  sessionsRef.forEach(doc => {
+    const sessionDocData = doc.data();
+    sessions.push({
+      id: doc.id,
+      title: sessionDocData.title,
+      description: sessionDocData.description,
+      speaker: sessionDocData.speaker,
+      datetime: sessionDocData.datetime,
+      tags: sessionDocData.tags,
+      isFavorite: sessionDocData.isFavorite
+    } as Session);
+  });
   state.sessions = sessions;
   state.isLoading = false;
 });
@@ -33,7 +31,7 @@ tagCollection.onSnapshot(tagRef => {
   state.isLoading = true;
   state.allTags = [];
   tagRef.forEach(tagDoc => {
-    state.allTags.push(tagDoc.data()['name']);
+    state.allTags.push(tagDoc.data().name);
   });
   state.isLoading = false;
 });
@@ -144,16 +142,6 @@ export const mutations: MutationTree<AppState> = {
 };
 
 export const actions: ActionTree<AppState, any> = {
-  loadSessionsAsync() {
-    const loadedSessions: Session[] = [];
-    state.isLoading = true;
-    sessionCollection
-      .get()
-      .then(sessionsRef =>
-        sessionsRef.forEach(doc => mapSessionsDocument(doc, loadedSessions))
-      )
-      .finally(() => (state.isLoading = false));
-  },
   addSessionAsync(state, newSession: Session) {
     sessionCollection.add(newSession).then(() => {
       const newTags = newSession.tags || [];

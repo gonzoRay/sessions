@@ -68,9 +68,6 @@
         class="hidden-sm-and-down"
       ></v-text-field>-->
       <v-spacer></v-spacer>
-      <v-btn icon @click.prevent="loadSessionsAsync()">
-        <v-icon>refresh</v-icon>
-      </v-btn>
       <v-btn icon>
         <v-icon>notifications</v-icon>
       </v-btn>
@@ -131,9 +128,6 @@ export default class App extends Vue {
 
   @Mutation
   public showAddSessionModal!: void;
-
-  @Action
-  public loadSessionsAsync!: void;
 
   constructor() {
     super();
