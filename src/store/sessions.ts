@@ -2,26 +2,23 @@ import { AppState, Session } from '@/types';
 import isBefore from 'date-fns/is_before';
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
 
-import db from './db';
+import { db, firebase } from './db';
 
 const sessionCollection = db.collection('sessions');
 const tagCollection = db.collection('tags');
+
+firebase.auth().onAuthStateChanged(user => {
+  state.currentUser = user;
+});
 
 // Create subscription to sessions Firestore collection in Firebase
 sessionCollection.onSnapshot(sessionsRef => {
   state.isLoading = true;
   const sessions: Session[] = [];
   sessionsRef.forEach(doc => {
-    const sessionDocData = doc.data();
-    sessions.push({
-      id: doc.id,
-      title: sessionDocData.title,
-      description: sessionDocData.description,
-      speaker: sessionDocData.speaker,
-      datetime: sessionDocData.datetime,
-      tags: sessionDocData.tags,
-      isFavorite: sessionDocData.isFavorite
-    } as Session);
+    const session = doc.data();
+    session.id = doc.id;
+    sessions.push(session as Session);
   });
   state.sessions = sessions;
   state.isLoading = false;
@@ -45,58 +42,7 @@ export const state: AppState = {
   },
   sessions: [],
   allTags: [],
-  sessionsDemo: [
-    {
-      id: '1',
-      title: 'Intro to Web Components w/ lit',
-      description:
-        'Shallow dive in the kiddie pool will get you quite far w/ lit-html and lit-template',
-      speaker: 'Eldridge Cleaver',
-      datetime: '2019-01-01 12:00:00 PM',
-      tags: ['Web Components', 'Polymer', 'PWA'],
-      isFavorite: false
-    } as Session,
-    {
-      id: '2',
-      title: 'VUE 102',
-      description: `Troubles in the rear Vue after you switch to Vue.JS.
-        Mr. Hampton will show you how to make the most of your web experience.`,
-      speaker: 'Fred Hampton',
-      datetime: '2018-02-01 09:00:00 AM',
-      tags: ['VueJS', 'PWA'],
-      isFavorite: false
-    } as Session,
-    {
-      id: '3',
-      title: 'Angular Elements Unleashed',
-      description: `Using Angular elements to do some really rad things like create bonafide Web Components.
-        And then share them w/ your friends.`,
-      speaker: 'Angela Davis',
-      datetime: '2019-06-01 09:00:00 AM',
-      tags: ['Angular', 'Web Components'],
-      isFavorite: false
-    } as Session,
-    {
-      id: '3',
-      title: 'Intro to React',
-      description:
-        'React is a small view library. Let us take an initial look at this ever popular javascript library.',
-      speaker: 'Assata Shakur',
-      datetime: '2019-04-01 09:00:00 AM',
-      tags: ['Frontend', 'ES2015', 'React'],
-      isFavorite: false
-    } as Session,
-    {
-      id: '4',
-      title: 'Advanced React w/ Redux',
-      description:
-        'Take a deeper dive w/ React by implementing a state pattern known as Redux.',
-      speaker: 'Paul Robeson',
-      datetime: '2019-03-15 09:00:00 AM',
-      tags: ['React', 'Redux'],
-      isFavorite: true
-    } as Session
-  ]
+  currentUser: null
 };
 
 export const getters: GetterTree<AppState, any> = {
@@ -118,7 +64,8 @@ export const getters: GetterTree<AppState, any> = {
   isLoading: state => state.isLoading,
   showSnackbar: state => state.snackbar.showSnackbar,
   snackbarText: state => state.snackbar.snackbarText,
-  allTags: state => state.allTags
+  allTags: state => state.allTags,
+  currentUser: state => state.currentUser
 };
 
 export const mutations: MutationTree<AppState> = {
@@ -145,11 +92,11 @@ export const actions: ActionTree<AppState, any> = {
   addSessionAsync(state, newSession: Session) {
     sessionCollection.add(newSession).then(() => {
       const newTags = newSession.tags || [];
-      newTags.forEach(t => {
-        const tagQuery = tagCollection.where('name', '==', t).get();
+      newTags.forEach(tag => {
+        const tagQuery = tagCollection.where('name', '==', tag).get();
         tagQuery.then(result => {
           if (result.empty) {
-            tagCollection.add({ name: t });
+            tagCollection.add({ name: tag });
           }
         });
       });

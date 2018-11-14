@@ -5,7 +5,7 @@ export interface AppState {
   snackbar: Snackbar;
   sessions: Session[];
   allTags: Tag[];
-  sessionsDemo: any;
+  currentUser: firebase.User | null;
 }
 
 // Models

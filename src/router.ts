@@ -1,7 +1,8 @@
+import Logout from '@/components/Logout.vue';
+import Login from '@/views/Login.vue';
+import Sessions from '@/views/Sessions.vue';
 import Vue from 'vue';
 import Router from 'vue-router';
-
-import Sessions from './views/Sessions.vue';
 
 Vue.use(Router);
 
@@ -10,6 +11,16 @@ export default new Router({
     {
       path: '/',
       redirect: '/sessions'
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login
+    },
+    {
+      path: '/logout',
+      name: 'logout',
+      component: Logout
     },
     {
       path: '/sessions',

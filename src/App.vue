@@ -56,26 +56,39 @@
         <v-btn icon class="hidden-xs-only" v-if="showBack()" @click="back()">
           <v-icon>arrow_back</v-icon>
         </v-btn>
-        <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+        <v-toolbar-side-icon v-if="currentUser" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
         <span>Sessions</span>
       </v-toolbar-title>
-      <!-- <v-text-field
-        flat
-        solo-inverted
-        hide-details
-        prepend-inner-icon="search"
-        label="Search"
-        class="hidden-sm-and-down"
-      ></v-text-field>-->
       <v-spacer></v-spacer>
-      <v-btn icon>
-        <v-icon>notifications</v-icon>
-      </v-btn>
-      <v-btn icon large>
-        <v-avatar size="32px" tile>
-          <img src="./assets/logo.png" alt="Sessions">
-        </v-avatar>
-      </v-btn>
+      <span v-if="currentUser" class="hidden-xs-only">
+        Logged in as:
+        <span class="font-italic">{{ getUserName() }}</span>
+      </span>
+      <v-menu v-model="userMenu" :close-on-content-click="false" :nudge-width="200" offset-x>
+        <v-btn icon large slot="activator">
+          <v-avatar icon>
+            <v-icon x-large>person</v-icon>
+          </v-avatar>
+        </v-btn>
+        <v-card v-if="currentUser">
+          <v-list>
+            <v-list-tile avatar>
+              <v-list-tile-avatar>
+                <img :src="getUserPhotoUrl()" alt="user avatar">
+              </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title>{{ getUserName() }}</v-list-tile-title>
+                <v-list-tile-sub-title>{{ getUserEmail() }}</v-list-tile-sub-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </v-list>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="primary" flat @click="logout()">Log out</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-menu>
     </v-toolbar>
     <v-content>
       <v-container>
@@ -89,7 +102,7 @@
       <v-icon>add</v-icon>
     </v-btn>
     <AddSessionForm></AddSessionForm>
-    <v-footer app>Sessions &copy;2018</v-footer>
+    <v-footer app>Sessions &copy;{{ getCurrentYear() }}</v-footer>
   </v-app>
 </template>
 
@@ -102,6 +115,8 @@ import Sessions from './views/Sessions.vue';
 import { Getter, Mutation, Action } from 'vuex-class';
 import { Session } from './types';
 import format from 'date-fns/format';
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
 @Component({
   components: {
@@ -113,6 +128,7 @@ export default class App extends Vue {
   @Prop()
   public source!: string;
 
+  public userMenu: boolean;
   public dateMenu: boolean;
   public drawer: any;
   public items: any[];
@@ -131,6 +147,7 @@ export default class App extends Vue {
 
   constructor() {
     super();
+    this.userMenu = false;
     this.dateMenu = false;
     this.drawer = null;
 
@@ -145,8 +162,33 @@ export default class App extends Vue {
         model: true,
         route: '/tags'
       },
-      { icon: 'settings', text: 'Settings', route: '/settings' }
+      { icon: 'settings', text: 'Settings', route: '/settings' },
+      { icon: 'logout', text: 'Log out', route: '/logout' }
     ];
+  }
+
+  @Getter
+  private currentUser!: firebase.User;
+
+  private getUserName() {
+    return this.currentUser ? this.currentUser.displayName : '';
+  }
+
+  private getUserEmail() {
+    return this.currentUser ? this.currentUser.email : '<unknown email>';
+  }
+
+  private getUserPhotoUrl() {
+    return this.currentUser ? this.currentUser.photoURL : '#';
+  }
+
+  private getCurrentYear() {
+    return new Date().getFullYear();
+  }
+
+  private logout() {
+    this.userMenu = false;
+    return this.$router.replace('/logout');
   }
 
   private back(): void {
