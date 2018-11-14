@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="addSessionModalVisible" width="800px">
+    <v-dialog :value="addSessionModalVisible" width="800px">
         <v-card>
             <v-card-title class="grey lighten-4 py-4 title">Create session</v-card-title>
             <v-card-text>
