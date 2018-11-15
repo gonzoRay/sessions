@@ -9,7 +9,7 @@ import { Getter } from 'vuex-class';
 @Component({})
 export default class Loading extends Vue {
   @Getter
-  public isLoading!: boolean;
+  private isLoading!: boolean;
 }
 </script>
 

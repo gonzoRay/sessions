@@ -64,5 +64,5 @@ export default class ConfirmModal extends Vue {
 }
 </script>
 
-<style>
+<style lang="stylus">
 </style>

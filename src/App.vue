@@ -71,7 +71,7 @@
           <v-icon>arrow_back</v-icon>
         </v-btn>
         <v-toolbar-side-icon v-if="currentUser" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-        <span>Sessions</span>
+        <span v-html="appName"></span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <span v-if="currentUser" class="hidden-xs-only">
@@ -125,7 +125,10 @@
       <v-icon>add</v-icon>
     </v-btn>
     <AddSessionForm></AddSessionForm>
-    <v-footer app>Sessions &copy;{{ getCurrentYear() }}</v-footer>
+    <v-footer app>
+      <span v-html="appName"></span>
+      &nbsp;&copy;{{ getCurrentYear() }}
+    </v-footer>
   </v-app>
 </template>
 
@@ -149,13 +152,13 @@ import 'firebase/auth';
   }
 })
 export default class App extends Vue {
-  @Prop()
-  private source!: string;
-
   private userMenu: boolean;
   private dateMenu: boolean;
   private drawer: any;
   private items: any[];
+
+  @Getter
+  private appName!: string;
 
   @Getter
   private allTags!: string[];
@@ -210,9 +213,15 @@ export default class App extends Vue {
   }
 
   private logout() {
-    this.userMenu = false;
-    this.drawer = false;
-    return this.$router.replace('/logout');
+    firebase
+      .auth()
+      .signOut()
+      .catch(err => alert(err.message || err))
+      .finally(() => {
+        this.userMenu = false;
+        this.drawer = false;
+        this.$router.replace('/login');
+      });
   }
 
   private back(): void {

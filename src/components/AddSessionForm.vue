@@ -89,20 +89,20 @@ import format from 'date-fns/format';
 
 @Component
 export default class AddSessionForm extends Vue {
-  public showDateMenu = false;
+  private showDateMenu = false;
 
   @Getter
-  public showAddModal!: boolean;
+  private showAddModal!: boolean;
 
   @Action
-  public addSessionAsync: any;
+  private addSessionAsync: any;
 
   @Mutation
-  public hideAddSessionModal: any;
+  private hideAddSessionModal: any;
 
-  public availableTags = ['Angular', 'Vue', 'Web Components'];
+  private availableTags = ['Angular', 'Vue', 'Web Components'];
 
-  public newSession: Session = {} as Session;
+  private newSession: Session = {} as Session;
 
   constructor() {
     super();
@@ -120,7 +120,7 @@ export default class AddSessionForm extends Vue {
     this.resetNewSession();
   }
 
-  public saveSession(data: Session): void {
+  private saveSession(data: Session): void {
     this.addSessionAsync(data);
     this.resetNewSession();
     this.hideAddSessionModal();
@@ -154,5 +154,5 @@ export default class AddSessionForm extends Vue {
 }
 </script>
 
-<style>
+<style lang="stylus">
 </style>

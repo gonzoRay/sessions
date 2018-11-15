@@ -41,12 +41,15 @@ import Loading from '@/components/Loading.vue';
 export default class SessionList extends Vue {
   @Prop()
   public title!: string;
+
   public tabs = ['Upcoming', 'Past'];
 
   @Getter
   public isLoading!: boolean;
+
   @Getter
   private upcoming!: Session[];
+
   @Getter
   private past!: Session[];
 }

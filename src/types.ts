@@ -1,5 +1,6 @@
 // Store
 export interface AppState {
+  appName: string;
   showAddModal: boolean;
   showConfirmModal: boolean;
   isLoading: boolean;

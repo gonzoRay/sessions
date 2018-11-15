@@ -1,4 +1,3 @@
-import Logout from '@/components/Logout.vue';
 import Login from '@/views/Login.vue';
 import Sessions from '@/views/Sessions.vue';
 import Vue from 'vue';
@@ -16,11 +15,6 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login
-    },
-    {
-      path: '/logout',
-      name: 'logout',
-      component: Logout
     },
     {
       path: '/sessions',
@@ -43,15 +37,6 @@ export default new Router({
       name: 'tag',
       component: () => import('./views/Tag.vue'),
       props: true
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import(/* webpackChunkName: "about" */ './views/About.vue')
     }
   ]
 });

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="back">
-      <v-btn flat small color="primary" @click="back">Back to Sessions</v-btn>
+      <v-btn flat small color="primary" @click="gotoList()">Back to Sessions</v-btn>
     </div>
     <div class="detail-wrapper">
       <div class="title">
@@ -59,33 +59,38 @@ import ConfirmModal from '@/components/ConfirmModal.vue';
   }
 })
 export default class SessionDetail extends Vue {
-  public item!: Session;
-
-  @Getter
-  public getSessionById!: (id: string) => Session;
-
-  @Mutation
-  public toggleFavorite: any;
-
-  @Action
-  public deleteSessionAsync: any;
-
-  @Action
-  public showAlert: any;
-
   @Prop({ required: true })
   private id!: string;
 
-  constructor() {
-    super();
-  }
+  private item!: Session;
+
+  @Getter
+  private getSessionById!: (id: string) => Session;
+
+  @Mutation
+  private toggleFavorite: any;
+
+  @Action
+  private deleteSessionAsync: any;
+
+  @Action
+  private showAlert: any;
 
   protected created() {
+    if (!this.id) {
+      this.gotoList();
+    }
+
     this.item = this.getSessionById(this.id);
+
+    if (!this.item) {
+      this.gotoList();
+    }
   }
 
   private deleteSession(id: string): void {
     const deleteModal = this.$refs.deleteModal as ConfirmModal;
+
     deleteModal.show().then(confirmAction => {
       if (confirmAction) {
         this.deleteSessionAsync(id);
@@ -95,13 +100,13 @@ export default class SessionDetail extends Vue {
     });
   }
 
-  private back() {
+  private gotoList() {
     this.$router.replace('/sessions');
   }
 }
 </script>
 
-<style>
+<style lang="stylus">
 .detail-wrapper {
   padding-left: 15px;
 }
@@ -109,6 +114,7 @@ export default class SessionDetail extends Vue {
 .back {
   padding-bottom: 15px;
 }
+
 .favorite {
   cursor: pointer;
   padding-left: 10px;

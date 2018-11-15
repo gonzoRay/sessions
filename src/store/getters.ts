@@ -3,6 +3,7 @@ import isBefore from 'date-fns/is_before';
 import { GetterTree } from 'vuex';
 
 export const getters: GetterTree<AppState, any> = {
+  appName: state => state.appName,
   getSessionById: (state: AppState) => (id: string): Session | undefined =>
     state.sessions.find(s => s.id === id),
   getSessionsByTagName: (state: AppState) => (tagName: string): Session[] => {

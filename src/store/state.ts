@@ -1,6 +1,7 @@
 import { AppState } from '@/types';
 
 export const state: AppState = {
+  appName: 'tech.<b>sessions</b>',
   showAddModal: false,
   showConfirmModal: false,
   isLoading: true,

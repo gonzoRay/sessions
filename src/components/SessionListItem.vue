@@ -41,8 +41,8 @@ export default class SessionListItem extends Vue {
 }
 </script>
 
-<style>
+<style lang="stylus">
 li a {
-  text-decoration: none;
+    text-decoration: none;
 }
 </style>
