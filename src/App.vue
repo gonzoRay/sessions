@@ -1,6 +1,12 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer :clipped="$vuetify.breakpoint.lgAndUp" v-model="drawer" fixed app>
+    <v-navigation-drawer
+      :clipped="$vuetify.breakpoint.lgAndUp"
+      v-model="drawer"
+      v-if="currentUser"
+      fixed
+      app
+    >
       <v-list dense>
         <template v-for="item in items">
           <v-layout v-if="item.heading" :key="item.heading" row align-center>
@@ -23,7 +29,7 @@
                 <v-list-tile-title>{{ item.text }}</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile v-for="(tag, i) in getTags()" :key="i">
+            <v-list-tile v-for="(tag, i) in getTags()" :key="i" class="indent-tags">
               <v-list-tile-action v-if="tag.icon">
                 <v-icon>{{ tag.icon }}</v-icon>
               </v-list-tile-action>
@@ -49,6 +55,14 @@
             </v-list-tile-content>
           </v-list-tile>
         </template>
+        <v-list-tile class="clickable">
+          <v-list-tile-action>
+            <v-icon>logout</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title @click="logout()">Log out</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar :clipped-left="$vuetify.breakpoint.lgAndUp" color="blue darken-3" dark app fixed>
@@ -98,7 +112,16 @@
         </v-layout>
       </v-container>
     </v-content>
-    <v-btn fab bottom right color="pink" dark fixed @click="showAddSessionModal()">
+    <v-btn
+      v-if="currentUser"
+      fab
+      bottom
+      right
+      color="pink"
+      dark
+      fixed
+      @click="showAddSessionModal()"
+    >
       <v-icon>add</v-icon>
     </v-btn>
     <AddSessionForm></AddSessionForm>
@@ -112,6 +135,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 import AppModal from './components/AppModal.vue';
 import AddSessionForm from '@/components/AddSessionForm.vue';
 import Sessions from './views/Sessions.vue';
+
 import { Getter, Mutation, Action } from 'vuex-class';
 import { Session } from './types';
 import format from 'date-fns/format';
@@ -126,24 +150,27 @@ import 'firebase/auth';
 })
 export default class App extends Vue {
   @Prop()
-  public source!: string;
+  private source!: string;
 
-  public userMenu: boolean;
-  public dateMenu: boolean;
-  public drawer: any;
-  public items: any[];
-
-  @Getter
-  public allTags!: string[];
+  private userMenu: boolean;
+  private dateMenu: boolean;
+  private drawer: any;
+  private items: any[];
 
   @Getter
-  public showSnackbar!: boolean;
+  private allTags!: string[];
 
   @Getter
-  public snackbarText!: string;
+  private showSnackbar!: boolean;
+
+  @Getter
+  private snackbarText!: string;
 
   @Mutation
-  public showAddSessionModal!: void;
+  private showAddSessionModal!: void;
+
+  @Getter
+  private currentUser!: firebase.User;
 
   constructor() {
     super();
@@ -162,13 +189,9 @@ export default class App extends Vue {
         model: true,
         route: '/tags'
       },
-      { icon: 'settings', text: 'Settings', route: '/settings' },
-      { icon: 'logout', text: 'Log out', route: '/logout' }
+      { icon: 'settings', text: 'Settings', route: '/settings' }
     ];
   }
-
-  @Getter
-  private currentUser!: firebase.User;
 
   private getUserName() {
     return this.currentUser ? this.currentUser.displayName : '';
@@ -179,7 +202,7 @@ export default class App extends Vue {
   }
 
   private getUserPhotoUrl() {
-    return this.currentUser ? this.currentUser.photoURL : '#';
+    return this.currentUser ? this.currentUser.photoURL : '';
   }
 
   private getCurrentYear() {
@@ -188,6 +211,7 @@ export default class App extends Vue {
 
   private logout() {
     this.userMenu = false;
+    this.drawer = false;
     return this.$router.replace('/logout');
   }
 
@@ -242,5 +266,13 @@ li.router-link-exact-active {
 .button-link {
   cursor: pointer;
   color: var(--v-primary-base);
+}
+
+.indent-tags {
+  padding-left: 12px;
+}
+
+.clickable {
+  cursor: pointer;
 }
 </style>
