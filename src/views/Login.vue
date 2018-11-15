@@ -5,7 +5,7 @@
                 <img class="logo" src="../assets/logo.png" width="120px" title="Sessions logo">
                 <div class="fill-height bottom-gradient"></div>
                 <h1 class="display-3">
-                    <span v-html="appName"></span>
+                    <span class="font-weight-light" v-html="appName"></span>
                 </h1>
                 <v-btn
                     large

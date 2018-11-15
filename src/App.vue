@@ -71,7 +71,7 @@
           <v-icon>arrow_back</v-icon>
         </v-btn>
         <v-toolbar-side-icon v-if="currentUser" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-        <span v-html="appName"></span>
+        <span class="font-weight-light" v-html="appName"></span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <span v-if="currentUser" class="hidden-xs-only">
