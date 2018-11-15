@@ -1,5 +1,5 @@
 <template>
-    <v-dialog :value="addSessionModalVisible" width="800px">
+    <v-dialog :value="showAddModal" width="800px">
         <v-card>
             <v-card-title class="grey lighten-4 py-4 title">Create session</v-card-title>
             <v-card-text>
@@ -83,7 +83,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import { Getter, Mutation, Action } from 'vuex-class';
-import { mutations } from '@/store/sessions';
+import { mutations } from '@/store/mutations';
 import { Session } from '@/types';
 import format from 'date-fns/format';
 
@@ -92,7 +92,7 @@ export default class AddSessionForm extends Vue {
   public showDateMenu = false;
 
   @Getter
-  public addSessionModalVisible!: boolean;
+  public showAddModal!: boolean;
 
   @Action
   public addSessionAsync: any;

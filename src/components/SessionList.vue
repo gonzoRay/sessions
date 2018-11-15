@@ -1,5 +1,5 @@
 <template>
-  <v-tabs>
+  <v-tabs class="flex-fix">
     <v-tab v-for="tabName in tabs" :key="tabName">{{ tabName }}</v-tab>
     <v-tab-item>
       <v-list two-line subheader v-if="!isLoading">
@@ -53,5 +53,8 @@ export default class SessionList extends Vue {
 </script>
 
 <style lang="stylus">
+.flex-fix {
+  width: 100%;
+}
 </style>
 
