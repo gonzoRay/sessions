@@ -26,6 +26,12 @@ export interface Tag {
   tagName: string;
 }
 
+export interface SessionUser {
+  email: string;
+  name: string;
+  uid: string;
+}
+
 export interface Snackbar {
   showSnackbar: boolean;
   snackbarText: string;

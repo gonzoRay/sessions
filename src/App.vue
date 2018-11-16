@@ -74,7 +74,7 @@
         <span class="font-weight-light" v-html="appName"></span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <span v-if="currentUser" class="hidden-xs-only">
+      <span v-if="currentUser" class="welcome-msg hidden-xs-only">
         Logged in as:
         <span class="font-italic">{{ getUserName() }}</span>
       </span>
@@ -98,6 +98,7 @@
           </v-list>
           <v-divider></v-divider>
           <v-card-actions>
+            <v-btn align-content="start" color="primary" flat>My Sessions</v-btn>
             <v-spacer></v-spacer>
             <v-btn color="primary" flat @click="logout()">Log out</v-btn>
           </v-card-actions>
@@ -265,6 +266,10 @@ li.router-link-active {
 
 li.router-link-exact-active {
   border-bottom: 1px solid #1565C0;
+}
+
+.welcome-msg {
+  padding-right: 10px;
 }
 
 .v-footer {

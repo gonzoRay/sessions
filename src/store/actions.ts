@@ -18,7 +18,7 @@ export const actions: ActionTree<AppState, any> = {
       });
     });
   },
-  toggleFavoriteAsync(state, session: Session) {
+  toggleFavoriteAsync({ commit }, session: Session) {
     const docRef = sessionCollection.doc(session.id);
     docRef.update({ isFavorite: !session.isFavorite }).then();
   },

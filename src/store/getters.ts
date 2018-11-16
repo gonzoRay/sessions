@@ -2,8 +2,6 @@ import { AppState, Session } from '@/types';
 import isBefore from 'date-fns/is_before';
 import { GetterTree } from 'vuex';
 
-import { userCollection } from './db';
-
 export const getters: GetterTree<AppState, any> = {
   appName: state => state.appName,
   getSessionById: (state: AppState) => (id: string): Session | undefined =>
@@ -12,17 +10,6 @@ export const getters: GetterTree<AppState, any> = {
     return state.sessions.filter(s =>
       s.tags!.some(t => t.toLowerCase() === tagName.toLowerCase())
     );
-  },
-  getUserByUid: (state: AppState) => (uid: string): any => {
-    const userRef = userCollection.where('uid', '==', uid).get();
-
-    userRef.then(result => {
-      if (result.empty) {
-        return 'no user found';
-      }
-
-      return result.docs[0];
-    });
   },
   upcoming: state =>
     state.sessions.filter(session =>
