@@ -17,6 +17,11 @@ export const getters: GetterTree<AppState, any> = {
     ),
   past: state =>
     state.sessions.filter(session => isBefore(session.datetime, new Date())),
+  mySessions: state => {
+    const currentUserId = (state.currentUser as firebase.User).uid;
+
+    return state.sessions.filter(s => s.createdByUid === currentUserId);
+  },
   favorites: state => state.sessions.filter(session => session.isFavorite),
   showAddModal: state => state.showAddModal,
   showConfirmModal: state => state.showConfirmModal,

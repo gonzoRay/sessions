@@ -33,6 +33,11 @@ export default new Router({
       component: () => import('./views/Favorites.vue')
     },
     {
+      path: '/mysessions',
+      name: 'mysessions',
+      component: () => import('./views/MySessions.vue')
+    },
+    {
       path: '/tag/:name',
       name: 'tag',
       component: () => import('./views/Tagged.vue'),
