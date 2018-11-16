@@ -107,7 +107,7 @@
     <v-content>
       <v-container>
         <v-layout align-start>
-          <router-view/>
+          <router-view :key="$route.fullPath"/>
           <v-snackbar :value="showSnackbar" :color="'success'" :bottom="true">{{ snackbarText }}</v-snackbar>
         </v-layout>
       </v-container>
