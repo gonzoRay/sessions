@@ -31,16 +31,16 @@ import Loading from '@/components/Loading.vue';
   }
 })
 export default class TaggedList extends Vue {
-  public tagged: Session[] = [];
+  private tagged: Session[] = [];
 
   @Prop({ required: true })
-  public name!: string;
+  private name!: string;
 
   @Getter
   private getSessionsByTagName!: (tagName: string) => Session[];
 
   private created() {
-    this.tagged = this.getSessionsByTagName(this.name);
+    this.tagged = this.getSessionsByTagName(this.name) || [];
   }
 }
 </script>

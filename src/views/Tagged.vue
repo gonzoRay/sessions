@@ -1,15 +1,18 @@
 <template>
-  <TagList/>
+  <TaggedList :name="name"/>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import TagList from '@/components/SessionList.vue';
+import { Component, Prop, Vue } from 'vue-property-decorator';
+import TaggedList from '@/components/TaggedList.vue';
 
 @Component({
   components: {
-    TagList
+    TaggedList
   }
 })
-export default class Tagged extends Vue {}
+export default class Tagged extends Vue {
+  @Prop({ required: true })
+  private name!: string;
+}
 </script>

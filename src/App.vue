@@ -80,8 +80,8 @@
       </span>
       <v-menu v-model="userMenu" :close-on-content-click="false" :nudge-width="200" offset-x>
         <v-btn icon large slot="activator">
-          <v-avatar icon>
-            <v-icon x-large>person</v-icon>
+          <v-avatar v-if="currentUser">
+            <img :src="getUserPhotoUrl()" alt="user avatar">
           </v-avatar>
         </v-btn>
         <v-card v-if="currentUser">
@@ -183,7 +183,6 @@ export default class App extends Vue {
 
     this.items = [
       { icon: 'event', text: 'Sessions', route: '/sessions' },
-      // { icon: 'event', text: 'Past Sessions', route: '/sessions/past' },
       { icon: 'star', text: 'Favorites', route: '/favorites' },
       {
         icon: 'keyboard_arrow_up',
@@ -244,11 +243,11 @@ export default class App extends Vue {
   }
 
   private getTags() {
-    return this.allTags.map(t => {
+    return this.allTags.map(tag => {
       return {
         icon: 'label',
-        text: t,
-        route: `/tag/${t.toLowerCase()}`
+        text: tag,
+        route: `/tag/${tag.toLowerCase()}`
       };
     });
   }
