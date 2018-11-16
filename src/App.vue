@@ -98,7 +98,7 @@
           </v-list>
           <v-divider></v-divider>
           <v-card-actions>
-            <v-btn align-content="start" color="primary" flat>My Sessions</v-btn>
+            <v-btn align-content="start" color="primary" flat @click="gotoMySessions()">My Sessions</v-btn>
             <v-spacer></v-spacer>
             <v-btn color="primary" flat @click="logout()">Log out</v-btn>
           </v-card-actions>
@@ -192,7 +192,7 @@ export default class App extends Vue {
         model: true,
         route: '/tags'
       },
-      { icon: 'settings', text: 'Settings', route: '/settings' }
+      { icon: 'person', text: 'My Sessions', route: '/mysessions' }
     ];
   }
 
@@ -210,6 +210,10 @@ export default class App extends Vue {
 
   private getCurrentYear() {
     return new Date().getFullYear();
+  }
+
+  private gotoMySessions() {
+    this.$router.replace('/mysessions');
   }
 
   private logout() {
