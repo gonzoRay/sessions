@@ -1,15 +1,15 @@
 <template>
-  <SessionList/>
+  <TagList/>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import SessionList from '@/components/SessionList.vue';
+import TagList from '@/components/SessionList.vue';
 
 @Component({
   components: {
-    SessionList
+    TagList
   }
 })
-export default class Sessions extends Vue {}
+export default class Tagged extends Vue {}
 </script>

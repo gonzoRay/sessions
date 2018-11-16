@@ -284,4 +284,8 @@ li.router-link-exact-active {
 .clickable {
   cursor: pointer;
 }
+
+.flex-fix {
+  width: 100%;
+}
 </style>

@@ -1,17 +1,17 @@
 <template>
-    <div>
-        <h5 class="headline">
-            Tagged as:
-            <span class="tag-name font-italic">{{ name }}</span>
-        </h5>
-        <v-list two-line subheader>
-            <template v-for="item in tagged">
-                <SessionListItem :key="item.id" :item="item"/>
-            </template>
-        </v-list>
-        <NoSessionsFound hideAddNew="true" v-if="!tagged.length"/>
-        <Loading/>
-    </div>
+  <div class="flex-fix">
+    <h5 class="headline">
+      Tagged as:
+      <span class="tag-name font-italic">{{ name }}</span>
+    </h5>
+    <v-list two-line subheader>
+      <template v-for="item in tagged">
+        <SessionListItem :key="item.id" :item="item"/>
+      </template>
+    </v-list>
+    <NoSessionsFound hideAddNew="true" v-if="!tagged.length"/>
+    <Loading/>
+  </div>
 </template>
 
 
@@ -30,7 +30,7 @@ import Loading from '@/components/Loading.vue';
     Loading
   }
 })
-export default class Tag extends Vue {
+export default class TaggedList extends Vue {
   public tagged: Session[] = [];
 
   @Prop({ required: true })
@@ -47,7 +47,6 @@ export default class Tag extends Vue {
 
 <style lang="stylus">
 .tag-name {
-    color: var(--v-primary-base);
+  color: var(--v-primary-base);
 }
 </style>
-

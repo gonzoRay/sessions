@@ -56,8 +56,5 @@ export default class SessionList extends Vue {
 </script>
 
 <style lang="stylus">
-.flex-fix {
-  width: 100%;
-}
 </style>
 

@@ -33,6 +33,7 @@
         </div>
       </div>
       <span class="speaker">{{ item.speaker }}</span>
+      <div>{{ createdByUser }}</div>
       <div class="subheading">{{ item.description }}</div>
       <div class="tags">
         <v-chip v-for="tag in item.tags" :key="tag">{{ tag }}</v-chip>
@@ -62,10 +63,15 @@ export default class SessionDetail extends Vue {
   @Prop({ required: true })
   private id!: string;
 
+  private createdByUser!: string | null;
+
   private item!: Session;
 
   @Getter
   private getSessionById!: (id: string) => Session;
+
+  @Getter
+  private getUserByUid!: (uid: string) => firebase.User;
 
   @Mutation
   private toggleFavorite: any;
@@ -76,12 +82,24 @@ export default class SessionDetail extends Vue {
   @Action
   private showAlert: any;
 
+  constructor() {
+    super();
+    this.createdByUser = '';
+  }
   protected created() {
     if (!this.id) {
       this.gotoList();
     }
 
     this.item = this.getSessionById(this.id);
+
+    if (!this.item.createdByUid) {
+      return;
+    }
+
+    const sessionUser = this.getUserByUid(this.item.createdByUid);
+
+    this.createdByUser = sessionUser ? sessionUser.displayName : 'unknown user';
 
     if (!this.item) {
       this.gotoList();

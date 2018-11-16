@@ -35,7 +35,7 @@ export default new Router({
     {
       path: '/tag/:name',
       name: 'tag',
-      component: () => import('./views/Tag.vue'),
+      component: () => import('./views/Tagged.vue'),
       props: true
     }
   ]
