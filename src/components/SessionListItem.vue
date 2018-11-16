@@ -11,7 +11,7 @@
                     {{ item.title }}
                     <v-icon
                         class="favorite"
-                        @click.prevent="toggleFavoriteAsync(item)"
+                        @click="toggleFavoriteAsync(item)"
                     >{{ item.isFavorite ? 'turned_in' : 'turned_in_not' }}</v-icon>
                 </v-list-tile-title>
                 <v-list-tile-sub-title>{{ item.description }}</v-list-tile-sub-title>
