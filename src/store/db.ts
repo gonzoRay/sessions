@@ -22,12 +22,14 @@ db.settings({ timestampsInSnapshots: true });
 
 const sessionCollection = db.collection('sessions');
 const tagCollection = db.collection('tags');
+const userCollection = db.collection('users');
 
+// Subscribe to changes in authentication state
 firebase.auth().onAuthStateChanged(user => {
   state.currentUser = user;
 });
 
-// Create subscription Firestore collections in Firebase
+// Subscribe to changes in Firestore collections in Firebase
 sessionCollection.onSnapshot(sessionsRef => {
   state.isLoading = true;
   state.sessions = [];
@@ -48,4 +50,4 @@ tagCollection.onSnapshot(tagRef => {
   state.isLoading = false;
 });
 
-export { tagCollection, sessionCollection, db, firebase };
+export { tagCollection, sessionCollection, userCollection, db, firebase };

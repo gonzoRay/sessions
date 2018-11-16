@@ -6,9 +6,6 @@ export const mutations: MutationTree<AppState> = {
     state.isLoading = false;
     state.sessions = sessions;
   },
-  toggleFavorite(state, session) {
-    session.isFavorite = !session.isFavorite;
-  },
   showAddSessionModal(state) {
     state.showAddModal = true;
   },

@@ -24,7 +24,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import { Getter } from 'vuex-class';
+import { Getter, Action } from 'vuex-class';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 
@@ -33,12 +33,19 @@ export default class Login extends Vue {
   @Getter
   private appName!: string;
 
+  @Action
+  private registerUserLogin!: any;
+
   private signInWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
+
     firebase
       .auth()
       .signInWithPopup(provider)
-      .then(() => this.$router.replace('/sessions'))
+      .then((authData: any) => {
+        this.registerUserLogin(authData.user);
+        this.$router.replace('/sessions');
+      })
       .catch(err => alert(err.message || err));
   }
 }

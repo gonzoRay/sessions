@@ -19,6 +19,7 @@ export interface Session {
   datetime: string;
   tags?: string[];
   isFavorite?: boolean;
+  createdByUid: string;
 }
 
 export interface Tag {

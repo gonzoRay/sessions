@@ -61,7 +61,7 @@
                             <v-combobox
                                 prepend-icon="label"
                                 v-model="newSession.tags"
-                                :items="availableTags"
+                                :items="allTags"
                                 label="Tags"
                                 multiple
                                 chips
@@ -100,7 +100,8 @@ export default class AddSessionForm extends Vue {
   @Mutation
   private hideAddSessionModal: any;
 
-  private availableTags = ['Angular', 'Vue', 'Web Components'];
+  @Getter
+  private allTags!: string[];
 
   private newSession: Session = {} as Session;
 
@@ -114,7 +115,8 @@ export default class AddSessionForm extends Vue {
       datetime: '',
       speaker: '',
       isFavorite: false,
-      tags: []
+      tags: [],
+      createdByUid: ''
     } as Session;
 
     this.resetNewSession();
@@ -134,7 +136,8 @@ export default class AddSessionForm extends Vue {
       datetime: '',
       speaker: '',
       isFavorite: false,
-      tags: []
+      tags: [],
+      createdByUid: ''
     } as Session;
   }
 
